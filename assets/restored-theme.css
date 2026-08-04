@@ -163,24 +163,24 @@ h2{font-family:'Oswald', sans-serif;font-size:clamp(38px,5vw,72px);line-height:1
 .footer-socials svg { width: 20px; height: 20px; fill: currentColor; }
 
 /* ── Clean Site Footer ── */
-.site-footer-clean { background:#111; color:#fff; padding:60px 0 0; font-family:'Satoshi',sans-serif; margin-top:80px; }
+.site-footer-clean { background:#F37423; color:#fff; padding:60px 0 0; font-family:'Satoshi',sans-serif; margin-top:80px; border-radius:40px 40px 0 0; }
 .sfc-inner { max-width:1140px; margin:0 auto; padding:0 30px 40px; display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:50px; }
 .sfc-brand img { width:70px; height:70px; object-fit:cover; border-radius:12px; margin-bottom:16px; }
-.sfc-tagline { color:rgba(255,255,255,0.5); font-size:13px; margin:0 0 16px; font-style:italic; }
-.sfc-contact { color:rgba(255,255,255,0.65); font-size:14px; line-height:1.9; margin:0; }
-.sfc-contact a { color:#f37423; }
+.sfc-tagline { color:rgba(255,255,255,0.7); font-size:13px; margin:0 0 16px; font-style:italic; }
+.sfc-contact { color:rgba(255,255,255,0.85); font-size:14px; line-height:1.9; margin:0; }
+.sfc-contact a { color:#fff; font-weight:700; }
 .sfc-contact a:hover { text-decoration:underline; }
 .sfc-links h4, .sfc-social h4 { color:#fff; font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin:0 0 20px; }
 .sfc-links ul { list-style:none; padding:0; margin:0; }
 .sfc-links ul li { margin-bottom:10px; }
-.sfc-links ul li a { color:rgba(255,255,255,0.6); font-size:14px; transition:color 0.2s; }
-.sfc-links ul li a:hover { color:#f37423; }
+.sfc-links ul li a { color:rgba(255,255,255,0.8); font-size:14px; transition:color 0.2s; }
+.sfc-links ul li a:hover { color:#fff; font-weight:700; }
 .sfc-social-icons { display:flex; gap:12px; flex-wrap:wrap; }
-.sfc-social-icons a { display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,0.08); transition:background 0.2s; }
-.sfc-social-icons a:hover { background:#f37423; }
+.sfc-social-icons a { display:flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,0.2); transition:background 0.2s; }
+.sfc-social-icons a:hover { background:rgba(0,0,0,0.2); }
 .sfc-social-icons svg { width:18px; height:18px; fill:#fff; }
-.sfc-bottom { border-top:1px solid rgba(255,255,255,0.08); padding:20px 30px; max-width:1140px; margin:0 auto; }
-.sfc-bottom p { color:rgba(255,255,255,0.35); font-size:13px; margin:0; }
+.sfc-bottom { border-top:1px solid rgba(255,255,255,0.2); padding:20px 30px; max-width:1140px; margin:0 auto; }
+.sfc-bottom p { color:rgba(255,255,255,0.6); font-size:13px; margin:0; }
 @media(max-width:768px){ .sfc-inner{ grid-template-columns:1fr; gap:35px; } }
 
 
