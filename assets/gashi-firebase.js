@@ -1,38 +1,47 @@
 /**
- * Gashi-k9 Firebase Integration
- * Uses Firebase Realtime Database REST API — no npm or build step needed.
- * All dogs added from the dashboard are visible to ALL visitors in real-time.
+ * Gashi-k9 Firebase Integration — Generic Collection Manager
+ * Supports: dogs, dogs_for_sale, expecting, puppies, clients
  */
 
 var GASHI_DB = 'https://gashik9com-default-rtdb.firebaseio.com';
 
 window.GashiDB = {
-
-  // Get all dogs from Firebase
-  getDogs: function() {
-    return fetch(GASHI_DB + '/dogs.json')
+  // Get all items from a collection
+  getAll: function(collection) {
+    return fetch(GASHI_DB + '/' + collection + '.json')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (!data) return [];
-        return Object.entries(data).map(function(entry) {
-          return Object.assign({}, entry[1], { firebaseKey: entry[0] });
-        });
+        return Object.entries(data).map(function(e) {
+          return Object.assign({}, e[1], { _key: e[0] });
+        }).sort(function(a,b){ return (b.addedAt||'').localeCompare(a.addedAt||''); });
       });
   },
-
-  // Save a new dog to Firebase
-  addDog: function(dogData) {
-    return fetch(GASHI_DB + '/dogs.json', {
+  // Add item to collection
+  add: function(collection, data) {
+    data.addedAt = new Date().toISOString();
+    return fetch(GASHI_DB + '/' + collection + '.json', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dogData)
+      body: JSON.stringify(data)
     }).then(function(r) { return r.json(); });
   },
-
-  // Delete a dog by Firebase key
-  deleteDog: function(firebaseKey) {
-    return fetch(GASHI_DB + '/dogs/' + firebaseKey + '.json', {
+  // Update item in collection
+  update: function(collection, key, data) {
+    return fetch(GASHI_DB + '/' + collection + '/' + key + '.json', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(r) { return r.json(); });
+  },
+  // Delete item from collection
+  remove: function(collection, key) {
+    return fetch(GASHI_DB + '/' + collection + '/' + key + '.json', {
       method: 'DELETE'
     });
-  }
+  },
+  // Legacy aliases
+  getDogs: function() { return this.getAll('dogs'); },
+  addDog: function(d) { return this.add('dogs', d); },
+  deleteDog: function(k) { return this.remove('dogs', k); }
 };
