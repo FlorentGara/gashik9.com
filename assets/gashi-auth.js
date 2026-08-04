@@ -4,7 +4,7 @@
   if (window.location.pathname.includes('/dashboard/') && !IS_AUTHED) {
     document.body.innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght;700&family=Roboto:wght;500&display=swap');
         
         body {
           margin: 0; padding: 0;
@@ -173,3 +173,4 @@
     });
   }
 })();
+

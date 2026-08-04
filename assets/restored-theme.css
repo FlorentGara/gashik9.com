@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght;700&family=Roboto:wght;500;700&display=swap');
 :root{--paper:#fffdf8;--ink:#0f0f0f;--muted:#625d55;--orange:#f37423;--soft:#f4eddf;--line:#eadfce;--shadow:0 22px 60px rgba(28,22,15,.11)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Roboto', sans-serif;line-height:1.65}
@@ -157,3 +157,4 @@ h2{font-family:'Oswald', sans-serif;font-size:clamp(38px,5vw,72px);line-height:1
 }
 .footer-socials a:hover { background: var(--orange); }
 .footer-socials svg { width: 20px; height: 20px; fill: currentColor; }
+
