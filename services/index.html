@@ -10,6 +10,7 @@
 <script defer src="../assets/gashi-content.js"></script>
 <script defer src="../assets/gashi-render.js"></script>
 <script src="../assets/gashi-cms.js"></script>
+<script src="../assets/gashi-firebase.js"></script>
 </head>
 <body data-page="services">
   <header class="topbar">
@@ -51,22 +52,26 @@
     </div>
   </section>
   <script>
-    // Load extra dogs added from dashboard
-    (function() {
-      try {
-        var dogs = JSON.parse(localStorage.getItem('gashi_dogs')) || [];
-        var grid = document.getElementById('dogs-grid');
-        dogs.forEach(function(dog) {
-          var card = document.createElement('article');
-          card.className = 'profile-card';
-          card.innerHTML = '<img src="' + dog.image + '" alt="' + dog.name + '" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'">' +
-            '<div><span>' + (dog.category || 'Our dog') + '</span><h2>' + dog.name + '</h2><p>' + dog.description + '</p></div>';
-          grid.appendChild(card);
-        });
-      } catch(e) {}
-    })();
+    // Load extra dogs from Firebase — visible to ALL visitors
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.GashiDB) {
+        GashiDB.getDogs().then(function(dogs) {
+          var grid = document.getElementById('dogs-grid');
+          if (!grid || !dogs.length) return;
+          dogs.forEach(function(dog) {
+            var card = document.createElement('article');
+            card.className = 'profile-card';
+            card.innerHTML =
+              '<img src="' + (dog.image || '../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg') + '" alt="' + dog.name + '" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'">' +
+              '<div><span>' + (dog.category || 'Our dog') + '</span><h2>' + dog.name + '</h2><p>' + dog.description + '</p></div>';
+            grid.appendChild(card);
+          });
+        }).catch(function(e) { console.log('Firebase load error:', e); });
+      }
+    });
   </script>
   </main>
+
   
   <script src="../assets/restored-site.js"></script>
 
