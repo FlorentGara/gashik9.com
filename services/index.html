@@ -5,19 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Our Dogs - gashik9.com</title>
   <link rel="stylesheet" href="../assets/restored-theme.css">
-
-
-<script defer src="../assets/gashi-content.js"></script>
-<script defer src="../assets/gashi-render.js"></script>
-<script src="../assets/gashi-cms.js"></script>
-<script src="../assets/gashi-firebase.js"></script>
-</head>
-<body data-page="services">
-  <header class="topbar">
-    <div class="shell nav">
-      <a class="brand" href="../index.html"><img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n.jpg" alt="Gashi-k9"><span><b>Gashi-k9</b><small>Home</small></span></a>
-      <nav class="menu"><a class="" href="../index.html">Home</a><a class="" href="../who-we-are/index.html">Who We Are</a><a class="active" href="../services/index.html">Our Dogs</a><a class="" href="../dogs-for-sale/index.html">Dogs For Sale</a><a class="" href="../expecting-dogs/index.html">Expecting Litters</a><a class="" href="../puppies/index.html">Puppies</a><a class="" href="../our-clients/index.html">Our Clients</a><a class="" href="../get-in-touch/index.html">Get In Touch</a></nav>
-      <button class="menu-button" aria-label="Open menu">Menu</button>
+  <script src="../assets/gashi-cms.js"></script>
+  <script src="../assets/gashi-firebase.js"></script>
 </head>
 <body data-page="services">
   <header class="topbar">
@@ -28,52 +17,49 @@
     </div>
   </header>
   <main>
-  <section class="page-hero">
-    <div class="shell"><p class="eyebrow">Gashi-k9 Home</p><h1>Our Dogs</h1><p class="lead">The original kennel dogs from your backup, redesigned as strong visual profiles.</p></div>
-  </section>
-  <section class="section">
-    <div class="shell profile-grid" id="dogs-grid">
-      <article class="profile-card">
-        <img src="../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg" alt="Gunner Gim Strasevski">
-        <div><span>Our main stud male</span><h2>Gunner Gim Strasevski</h2><p>Meet Gunner Gim Strasevski, our exceptional stud male and a true example of what a well-bred working dog should be. With a powerful build, strong bone structure, and a commanding presence, Gunner stands out the moment you see him - but it's his temperament and working ability that truly make him special.</p></div>
-      </article>
-      <article class="profile-card">
-        <img src="../wp-content/uploads/2025/05/IMG_6308-1024x683.jpeg" alt="Dina Ascruvium Devil">
-        <div><span>Breeding female</span><h2>Dina Ascruvium Devil</h2><p>Dina - The Soul of Our Breeding Program. Strong, smart, and incredibly well-balanced, she brings together everything we believe a working dog should be. She's got a powerful frame and a clean, athletic build, but it's her presence that stands out most.</p></div>
-      </article>
-      <article class="profile-card">
-        <img src="../wp-content/uploads/2025/05/ffd882c9-f6ee-41c2-aa84-1204a6477144-1024x683.jpg" alt="Puma von Gashi">
-        <div><span>Future in the making</span><h2>Puma von Gashi</h2><p>Meet Puma von Gashi, a young female we proudly bred ourselves. At just 10 months old, she's already showing all the signs of a future powerhouse. A direct granddaughter of Gunner Gim Strasevski.</p></div>
-      </article>
-      <article class="profile-card">
-        <img src="../wp-content/uploads/2025/05/IMG_0781-1024x683.jpg" alt="Freya von Gashi">
-        <div><span>Pick of the litter</span><h2>Freya von Gashi</h2><p>She is our pick of the litter from Hellboy x Dina. We got high hopes for her already. We will update her progress as she grows.</p></div>
-      </article>
-    </div>
-  </section>
-  <script>
-    // Load extra dogs from Firebase — visible to ALL visitors
-    document.addEventListener('DOMContentLoaded', function() {
-      if (window.GashiDB) {
-        GashiDB.getDogs().then(function(dogs) {
-          var grid = document.getElementById('dogs-grid');
-          if (!grid || !dogs.length) return;
-          dogs.forEach(function(dog) {
-            var card = document.createElement('article');
-            card.className = 'profile-card';
-            card.innerHTML =
-              '<img src="' + (dog.image || '../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg') + '" alt="' + dog.name + '" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'">' +
-              '<div><span>' + (dog.category || 'Our dog') + '</span><h2>' + dog.name + '</h2><p>' + dog.description + '</p></div>';
-            grid.appendChild(card);
-          });
-        }).catch(function(e) { console.log('Firebase load error:', e); });
-      }
-    });
-  </script>
+    <section class="page-hero">
+      <div class="shell"><p class="eyebrow">Gashi-k9 Home</p><h1>Our Dogs</h1><p class="lead">Elite working dogs from our kennel in Kosovo.</p></div>
+    </section>
+    <section class="section">
+      <div class="shell profile-grid" id="dogs-grid">
+        <article class="profile-card">
+          <img src="../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg" alt="Gunner Gim Strasevski">
+          <div><span>Our main stud male</span><h2>Gunner Gim Strasevski</h2><p>Meet Gunner Gim Strasevski, our exceptional stud male and a true example of what a well-bred working dog should be. With a powerful build, strong bone structure, and a commanding presence, Gunner stands out the moment you see him — but it's his temperament and working ability that truly make him special.</p></div>
+        </article>
+        <article class="profile-card">
+          <img src="../wp-content/uploads/2025/05/IMG_6308-1024x683.jpeg" alt="Dina Ascruvium Devil">
+          <div><span>Breeding female</span><h2>Dina Ascruvium Devil</h2><p>Dina - The Soul of Our Breeding Program. Strong, smart, and incredibly well-balanced, she brings together everything we believe a working dog should be. She's got a powerful frame and a clean, athletic build, but it's her presence that stands out most.</p></div>
+        </article>
+        <article class="profile-card">
+          <img src="../wp-content/uploads/2025/05/ffd882c9-f6ee-41c2-aa84-1204a6477144-1024x683.jpg" alt="Puma von Gashi">
+          <div><span>Future in the making</span><h2>Puma von Gashi</h2><p>Meet Puma von Gashi, a young female we proudly bred ourselves. At just 10 months old, she's already showing all the signs of a future powerhouse. A direct granddaughter of Gunner Gim Strasevski.</p></div>
+        </article>
+        <article class="profile-card">
+          <img src="../wp-content/uploads/2025/05/IMG_0781-1024x683.jpg" alt="Freya von Gashi">
+          <div><span>Pick of the litter</span><h2>Freya von Gashi</h2><p>She is our pick of the litter from Hellboy x Dina. We got high hopes for her already. We will update her progress as she grows.</p></div>
+        </article>
+      </div>
+    </section>
+    <script>
+      // Load extra dogs from Firebase — visible to ALL visitors
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.GashiDB) {
+          GashiDB.getDogs().then(function(dogs) {
+            var grid = document.getElementById('dogs-grid');
+            if (!grid || !dogs || !dogs.length) return;
+            dogs.forEach(function(dog) {
+              var card = document.createElement('article');
+              card.className = 'profile-card';
+              card.innerHTML =
+                '<img src="' + (dog.image || '../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg') + '" alt="' + dog.name + '" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'">' +
+                '<div><span>' + (dog.category || 'Our dog') + '</span><h2>' + dog.name + '</h2><p>' + dog.description + '</p></div>';
+              grid.appendChild(card);
+            });
+          }).catch(function(e) { console.log('Firebase:', e); });
+        }
+      });
+    </script>
   </main>
-
-  
-  <script src="../assets/restored-site.js"></script>
 
 <footer class="site-footer-clean">
   <div class="sfc-inner">
@@ -115,15 +101,3 @@
 </footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
