@@ -228,6 +228,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         Footer Links
       </button>
+      <button class="sidebar-item" onclick="showPage('dogs',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0 1 14 0v2"/></svg>
+        Dogs Manager
+      </button>
     </aside>
 
     <!-- Main -->
@@ -313,6 +317,31 @@
           <div class="card-title">Footer Navigation</div>
           <div class="field"><label>Footer Tagline</label><input type="text" data-field="footer_tagline" placeholder="Elite Working Dogs from Kosovo"></div>
           <div class="field"><label>Copyright Text</label><input type="text" data-field="footer_copyright" placeholder="Powered by: nhapa.digital"></div>
+        </div>
+      </div>
+
+      <!-- DOGS MANAGER -->
+      <div class="dash-page" id="page-dogs">
+        <div class="page-title">Dogs Manager 🐕</div>
+        <div class="page-subtitle">Add new dogs — they appear instantly on the "Our Dogs" page.</div>
+        <div class="card">
+          <div class="card-title">Add New Dog</div>
+          <div class="field">
+            <label>Dog Photo</label>
+            <input type="file" id="dog-photo-input" accept="image/*" onchange="previewDogPhoto(this)" style="padding:8px;">
+            <div id="dog-photo-preview" style="margin-top:12px;display:none;">
+              <img id="dog-preview-img" style="max-width:200px;max-height:150px;border-radius:10px;object-fit:cover;">
+            </div>
+          </div>
+          <div class="field"><label>Dog Name</label><input type="text" id="dog-name" placeholder="e.g. Rex von Gashi"></div>
+          <div class="field"><label>Category / Label</label><input type="text" id="dog-category" placeholder="e.g. Breeding Male, For Sale, Puppy..."></div>
+          <div class="field"><label>Description</label><textarea id="dog-desc" placeholder="Write about this dog..." style="min-height:100px;"></textarea></div>
+          <button onclick="addDog()" style="padding:12px 28px;background:#f37423;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">+ Add Dog to Site</button>
+          <div id="dog-add-status" style="margin-top:10px;font-size:13px;color:#22c55e;display:none;">✓ Dog added! Open "Our Dogs" page to see it.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Current Extra Dogs</div>
+          <div id="dogs-list"><p style="color:#aaa;font-size:14px;">No extra dogs added yet.</p></div>
         </div>
       </div>
 
@@ -406,7 +435,71 @@
   });
 
   // Load on start
-  if (sessionStorage.getItem(AUTH_KEY) === 'true') { loadFields(); }
+  if (sessionStorage.getItem(AUTH_KEY) === 'true') { loadFields(); renderDogsList(); }
+
+  // ── Dogs Manager ──
+  var currentDogPhoto = '';
+
+  function previewDogPhoto(input) {
+    if (!input.files || !input.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      currentDogPhoto = e.target.result;
+      document.getElementById('dog-preview-img').src = currentDogPhoto;
+      document.getElementById('dog-photo-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  function addDog() {
+    var name = document.getElementById('dog-name').value.trim();
+    var category = document.getElementById('dog-category').value.trim();
+    var desc = document.getElementById('dog-desc').value.trim();
+    if (!name || !desc) { alert('Please fill in at least the name and description.'); return; }
+    var dogs = [];
+    try { dogs = JSON.parse(localStorage.getItem('gashi_dogs')) || []; } catch(e){}
+    dogs.push({ id: Date.now(), name: name, category: category, description: desc, image: currentDogPhoto || '' });
+    localStorage.setItem('gashi_dogs', JSON.stringify(dogs));
+    // Reset form
+    document.getElementById('dog-name').value = '';
+    document.getElementById('dog-category').value = '';
+    document.getElementById('dog-desc').value = '';
+    document.getElementById('dog-photo-input').value = '';
+    document.getElementById('dog-photo-preview').style.display = 'none';
+    currentDogPhoto = '';
+    // Show success
+    var s = document.getElementById('dog-add-status');
+    s.style.display = 'block';
+    setTimeout(function(){ s.style.display='none'; }, 3000);
+    renderDogsList();
+  }
+
+  function deleteDog(id) {
+    var dogs = [];
+    try { dogs = JSON.parse(localStorage.getItem('gashi_dogs')) || []; } catch(e){}
+    dogs = dogs.filter(function(d){ return d.id !== id; });
+    localStorage.setItem('gashi_dogs', JSON.stringify(dogs));
+    renderDogsList();
+  }
+
+  function renderDogsList() {
+    var list = document.getElementById('dogs-list');
+    if (!list) return;
+    var dogs = [];
+    try { dogs = JSON.parse(localStorage.getItem('gashi_dogs')) || []; } catch(e){}
+    if (dogs.length === 0) {
+      list.innerHTML = '<p style="color:#aaa;font-size:14px;">No extra dogs added yet.</p>';
+      return;
+    }
+    list.innerHTML = dogs.map(function(dog) {
+      return '<div style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
+        (dog.image ? '<img src="'+dog.image+'" style="width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0;">' : '<div style="width:64px;height:64px;background:#f5f5f0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;">🐕</div>') +
+        '<div style="flex:1;min-width:0;"><div style="font-weight:700;font-size:15px;">'+dog.name+'</div><div style="font-size:12px;color:#f37423;font-weight:600;margin:2px 0;">'+( dog.category||'')+'</div><div style="font-size:13px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+dog.description.substring(0,80)+'...</div></div>' +
+        '<button onclick="deleteDog('+dog.id+')" style="padding:8px 14px;background:#fff0f0;color:#ef4444;border:1px solid #fecaca;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;flex-shrink:0;">Delete</button>' +
+        '</div>';
+    }).join('');
+  }
 </script>
+
 </body>
 </html>
