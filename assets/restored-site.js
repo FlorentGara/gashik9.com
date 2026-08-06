@@ -2,9 +2,24 @@
   var button = document.querySelector(".menu-button");
   var menu = document.querySelector(".menu");
   if (button && menu) {
+    button.innerHTML = "☰"; // Default hamburger
     button.addEventListener("click", function () {
       menu.classList.toggle("open");
+      if (menu.classList.contains("open")) {
+        button.innerHTML = "✕"; // Close icon
+      } else {
+        button.innerHTML = "☰"; // Hamburger icon
+      }
     });
+
+    // Add gear icon at bottom of menu for mobile
+    var gear = document.createElement("a");
+    gear.href = "../dashboard/index.html";
+    gear.innerHTML = "⚙️";
+    gear.style.marginTop = "auto"; // Push to bottom
+    gear.style.fontSize = "24px";
+    gear.style.color = "#f47320";
+    menu.appendChild(gear);
   }
 
   if (window.innerWidth > 1024) {
