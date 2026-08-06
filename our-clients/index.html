@@ -71,9 +71,9 @@
           var locInfo = d.country ? '<div class="client-location">'+d.country+'</div>' : '';
           var nameInfo = d.name ? '<div class="client-name">'+d.name+'</div>' : '';
           
-          if (!d.review && !d.name && d.image) {
+          if (!d.review && (!d.name || d.name === "Gashi-k9 Client") && d.image) {
               // Legacy image-only client formatting
-              return '<div class="client-card" style="padding:0;overflow:hidden;"><img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover;display:block;"></div>';
+              return '<div class="client-card" style="padding:0;overflow:hidden;"><img src="'+d.image+'" style="width:100%;height:100%;object-fit:cover;display:block;min-height:300px;"></div>';
           }
           
           return '<div class="client-card">' +
