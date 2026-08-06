@@ -6,587 +6,485 @@
   <title>Dashboard – Gashi-k9</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;background:#f5f5f0;color:#1a1a1a;min-height:100vh}
 
     /* Login */
-    #login-screen { display:flex; align-items:center; justify-content:center; min-height:100vh; background:linear-gradient(135deg,#1a1a1a,#2d2d2d); }
-    .login-box { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:24px; padding:48px; width:100%; max-width:400px; text-align:center; }
-    .login-box img { width:70px; height:70px; border-radius:14px; object-fit:cover; margin-bottom:20px; }
-    .login-box h1 { color:#fff; font-size:22px; margin-bottom:8px; }
-    .login-box p { color:rgba(255,255,255,.4); font-size:14px; margin-bottom:32px; }
-    .login-box input { width:100%; padding:14px 18px; border-radius:12px; border:1.5px solid rgba(255,255,255,.1); background:rgba(255,255,255,.07); color:#fff; font-size:15px; font-family:'Inter',sans-serif; margin-bottom:14px; outline:none; transition:border-color .2s; }
-    .login-box input:focus { border-color:#f37423; }
-    .login-box button { width:100%; padding:15px; background:#f37423; color:#fff; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
-    .login-error { color:#ff6b6b; font-size:13px; margin-bottom:12px; display:none; }
+    #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a1a,#2d2d2d)}
+    .lbox{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:48px;width:100%;max-width:400px;text-align:center}
+    .lbox img{width:70px;height:70px;border-radius:14px;object-fit:cover;margin-bottom:18px}
+    .lbox h1{color:#fff;font-size:22px;margin-bottom:6px}
+    .lbox p{color:rgba(255,255,255,.4);font-size:14px;margin-bottom:28px}
+    .lbox input{width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font-size:15px;font-family:'Inter',sans-serif;margin-bottom:12px;outline:none}
+    .lbox input:focus{border-color:#f37423}
+    .lbox button{width:100%;padding:14px;background:#f37423;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+    .lerr{color:#ff6b6b;font-size:13px;margin-bottom:10px;display:none}
 
-    /* Dashboard */
-    #dashboard { display:none; }
-    .dash-header { background:#fff; border-bottom:1px solid #e8e8e8; padding:0 32px; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
-    .dash-logo { display:flex; align-items:center; gap:12px; font-weight:700; font-size:17px; }
-    .dash-logo img { width:36px; height:36px; border-radius:8px; object-fit:cover; }
-    .dash-logo span { color:#f37423; }
-    .dash-header-right { display:flex; gap:12px; align-items:center; }
-    .btn-visit { padding:8px 18px; background:#f37423; color:#fff; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; }
-    .btn-logout { padding:8px 18px; background:#f5f5f5; color:#666; border:1px solid #e0e0e0; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; }
+    /* Layout */
+    #dash{display:none}
+    .dh{background:#fff;border-bottom:1px solid #e8e8e8;padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+    .dh-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px}
+    .dh-logo img{width:34px;height:34px;border-radius:8px;object-fit:cover}
+    .dh-logo span{color:#f37423}
+    .dh-right{display:flex;gap:10px}
+    .btn-visit{padding:7px 16px;background:#f37423;color:#fff;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none}
+    .btn-logout{padding:7px 16px;background:#f5f5f5;color:#666;border:1px solid #e0e0e0;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
 
-    .dash-body { display:flex; min-height:calc(100vh - 64px); }
-    .dash-sidebar { width:220px; background:#fff; border-right:1px solid #e8e8e8; padding:20px 12px; flex-shrink:0; overflow-y:auto; }
-    .sidebar-label { font-size:10px; font-weight:700; color:#aaa; text-transform:uppercase; letter-spacing:1.5px; padding:0 12px; margin:16px 0 6px; }
-    .sidebar-label:first-child { margin-top:0; }
-    .sidebar-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:500; color:#555; margin-bottom:2px; border:none; background:none; width:100%; text-align:left; font-family:'Inter',sans-serif; transition:all .15s; }
-    .sidebar-item:hover { background:#f5f5f0; color:#1a1a1a; }
-    .sidebar-item.active { background:#fff4ec; color:#f37423; font-weight:700; }
-    .sidebar-item svg { width:16px; height:16px; flex-shrink:0; }
+    .dbody{display:flex;min-height:calc(100vh - 60px)}
+    .dsidebar{width:210px;background:#fff;border-right:1px solid #e8e8e8;padding:16px 10px;flex-shrink:0;overflow-y:auto}
+    .slabel{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1.5px;padding:0 10px;margin:14px 0 5px}
+    .slabel:first-child{margin-top:0}
+    .sitem{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:500;color:#555;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;font-family:'Inter',sans-serif;transition:all .15s}
+    .sitem:hover{background:#f5f5f0;color:#1a1a1a}
+    .sitem.active{background:#fff4ec;color:#f37423;font-weight:700}
+    .sitem svg{width:15px;height:15px;flex-shrink:0}
 
-    .dash-main { flex:1; padding:28px 32px 100px; overflow-y:auto; }
-    .dash-page { display:none; }
-    .dash-page.active { display:block; }
-    .page-title { font-size:22px; font-weight:700; margin-bottom:4px; }
-    .page-subtitle { color:#888; font-size:14px; margin-bottom:24px; }
+    .dmain{flex:1;padding:24px 28px 90px;overflow-y:auto;max-width:1100px}
+    .dpage{display:none}
+    .dpage.active{display:block}
+    .ptitle{font-size:20px;font-weight:700;margin-bottom:4px}
+    .psub{color:#888;font-size:13px;margin-bottom:20px}
 
-    .card { background:#fff; border:1px solid #e8e8e8; border-radius:16px; padding:24px; margin-bottom:20px; }
-    .card-title { font-size:11px; font-weight:700; color:#aaa; text-transform:uppercase; letter-spacing:1px; margin-bottom:18px; }
-    .field { margin-bottom:16px; }
-    .field label { display:block; font-size:13px; font-weight:600; color:#555; margin-bottom:5px; }
-    .field input, .field textarea, .field select { width:100%; padding:10px 14px; border:1.5px solid #e8e8e8; border-radius:10px; font-size:14px; font-family:'Inter',sans-serif; color:#1a1a1a; outline:none; transition:border-color .2s; background:#fafafa; }
-    .field input:focus, .field textarea:focus, .field select:focus { border-color:#f37423; background:#fff; }
-    .field textarea { resize:vertical; min-height:80px; }
-    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    /* Cards */
+    .card{background:#fff;border:1px solid #e8e8e8;border-radius:14px;padding:20px;margin-bottom:18px}
+    .ctitle{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+    .field{margin-bottom:14px}
+    .field label{display:block;font-size:12px;font-weight:600;color:#555;margin-bottom:4px}
+    .field input,.field textarea,.field select{width:100%;padding:9px 12px;border:1.5px solid #e8e8e8;border-radius:9px;font-size:13px;font-family:'Inter',sans-serif;color:#1a1a1a;outline:none;transition:border-color .2s;background:#fafafa}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:#f37423;background:#fff}
+    .field textarea{resize:vertical;min-height:70px}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .prev-img{margin-top:8px;display:none}
+    .prev-img img{max-width:160px;max-height:110px;border-radius:9px;object-fit:cover}
 
-    .btn-add { padding:11px 24px; background:#f37423; color:#fff; border:none; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .2s; }
-    .btn-add:hover { opacity:.85; }
-    .add-status { margin-top:10px; font-size:13px; display:none; }
+    /* Buttons */
+    .btn-add{padding:10px 22px;background:#f37423;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s}
+    .btn-add:hover{opacity:.85}
+    .btn-sm{padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;border:none}
+    .btn-edit{background:#e8f4fd;color:#1d6fa4}
+    .btn-del{background:#fff0f0;color:#ef4444;border:1px solid #fecaca!important}
+    .btn-save-edit{background:#dcfce7;color:#16a34a}
+    .add-status{margin-top:8px;font-size:12px;display:none}
 
-    /* Item list */
-    .item-list-row { display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid #f0f0f0; }
-    .item-list-row:last-child { border-bottom:none; }
-    .item-thumb { width:60px; height:60px; object-fit:cover; border-radius:10px; flex-shrink:0; background:#f5f5f0; display:flex; align-items:center; justify-content:center; font-size:22px; }
-    .item-thumb img { width:60px; height:60px; object-fit:cover; border-radius:10px; }
-    .item-info { flex:1; min-width:0; }
-    .item-name { font-weight:700; font-size:14px; }
-    .item-cat { font-size:12px; color:#f37423; font-weight:600; margin:2px 0; }
-    .item-desc { font-size:12px; color:#888; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .badge { display:inline-block; padding:2px 10px; border-radius:999px; font-size:11px; font-weight:700; }
-    .badge-green { background:#dcfce7; color:#16a34a; }
-    .badge-yellow { background:#fef9c3; color:#a16207; }
-    .badge-red { background:#fee2e2; color:#dc2626; }
-    .badge-blue { background:#dbeafe; color:#1d4ed8; }
-    .btn-del { padding:7px 12px; background:#fff0f0; color:#ef4444; border:1px solid #fecaca; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; flex-shrink:0; }
+    /* Item rows */
+    .irow{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f0f0f0}
+    .irow:last-child{border-bottom:none}
+    .ithumb{width:56px;height:56px;border-radius:9px;object-fit:cover;flex-shrink:0;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:20px}
+    .iinfo{flex:1;min-width:0}
+    .iname{font-weight:700;font-size:13px;margin-bottom:2px}
+    .icat{font-size:11px;color:#f37423;font-weight:600}
+    .idesc{font-size:11px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .ibtns{display:flex;gap:6px;flex-shrink:0;align-items:center}
+    .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700}
+    .bg-green{background:#dcfce7;color:#16a34a}
+    .bg-yellow{background:#fef9c3;color:#a16207}
+    .bg-red{background:#fee2e2;color:#dc2626}
+
+    /* Edit form inline */
+    .edit-form{background:#f9f9f9;border:1.5px solid #f37423;border-radius:10px;padding:14px;margin-top:10px;display:none}
+    .edit-form.open{display:block}
 
     /* Stats */
-    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
-    .stat-card { background:#fff; border:1px solid #e8e8e8; border-radius:14px; padding:18px; }
-    .stat-label { font-size:11px; color:#aaa; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-    .stat-value { font-size:26px; font-weight:700; color:#f37423; }
+    .sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+    .scard{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px}
+    .slbl{font-size:10px;color:#bbb;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .sval{font-size:22px;font-weight:700;color:#f37423}
+
+    /* Homepage editor */
+    .hp-section{border:1.5px dashed #e0e0e0;border-radius:12px;padding:16px;margin-bottom:14px}
+    .hp-section-title{font-size:12px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
 
     /* Save bar */
-    .save-bar { position:fixed; bottom:0; left:220px; right:0; background:#fff; border-top:1px solid #e8e8e8; padding:14px 32px; display:flex; align-items:center; justify-content:space-between; z-index:99; }
-    .save-status { font-size:14px; color:#888; }
-    .save-status.saved { color:#22c55e; font-weight:600; }
-    .btn-save { padding:11px 28px; background:#f37423; color:#fff; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
+    .savebar{position:fixed;bottom:0;left:210px;right:0;background:#fff;border-top:1px solid #e8e8e8;padding:12px 28px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+    .savestatus{font-size:13px;color:#888}
+    .savestatus.ok{color:#22c55e;font-weight:600}
+    .btn-save{padding:10px 26px;background:#f37423;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
 
-    .photo-preview { margin-top:10px; display:none; }
-    .photo-preview img { max-width:180px; max-height:130px; border-radius:10px; object-fit:cover; }
-
-    @media(max-width:768px) { .dash-sidebar{display:none;} .save-bar{left:0;} .stats-grid{grid-template-columns:1fr 1fr;} }
+    @media(max-width:768px){.dsidebar{display:none}.savebar{left:0}.sgrid{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen">
-  <div class="login-box">
-    <img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n-e1750623598149.jpg" alt="Logo">
-    <h1>Gashi-k9 Dashboard</h1>
+  <div class="lbox">
+    <img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n-e1750623598149.jpg" alt="">
+    <h1>Gashi-k9 Admin</h1>
     <p>Hyr me passwordin</p>
-    <div class="login-error" id="login-error">Password gabim. Provo përsëri.</div>
-    <input type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
-    <button onclick="doLogin()">Hyr</button>
+    <div class="lerr" id="lerr">Password gabim!</div>
+    <input type="password" id="pwd" placeholder="Password" onkeydown="if(event.key==='Enter')login()">
+    <button onclick="login()">Hyr →</button>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <header class="dash-header">
-    <div class="dash-logo">
+<div id="dash">
+  <div class="dh">
+    <div class="dh-logo">
       <img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n-e1750623598149.jpg" alt="">
       <div><span>Gashi-k9</span> Admin</div>
     </div>
-    <div class="dash-header-right">
+    <div class="dh-right">
       <a href="../index.html" target="_blank" class="btn-visit">Shiko Faqen ↗</a>
-      <button class="btn-logout" onclick="doLogout()">Dil</button>
+      <button class="btn-logout" onclick="logout()">Dil</button>
     </div>
-  </header>
+  </div>
 
-  <div class="dash-body">
-    <aside class="dash-sidebar">
-      <div class="sidebar-label">Kryesor</div>
-      <button class="sidebar-item active" onclick="showPage('overview',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Overview
-      </button>
+  <div class="dbody">
+    <aside class="dsidebar">
+      <div class="slabel">Kryesor</div>
+      <button class="sitem active" onclick="go('overview',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Overview</button>
 
-      <div class="sidebar-label">Qentë</div>
-      <button class="sidebar-item" onclick="showPage('dogs',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.96-1.925 2.344-3.328"/><path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.96-1.925-2.344-3.328"/><path d="M8 14v.5A3.5 3.5 0 0 0 11.5 18h1a3.5 3.5 0 0 0 3.5-3.5V14"/><path d="M6.5 9.5 C6.5 9.5 8 11 12 11s5.5-1.5 5.5-1.5"/></svg>
-        Our Dogs
-      </button>
-      <button class="sidebar-item" onclick="showPage('forsale',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-        Dogs for Sale
-      </button>
-      <button class="sidebar-item" onclick="showPage('expecting',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Expecting Litters
-      </button>
-      <button class="sidebar-item" onclick="showPage('puppies',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
-        Puppies
-      </button>
-
-      <div class="sidebar-label">Klientët</div>
-      <button class="sidebar-item" onclick="showPage('clients',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Our Clients
-      </button>
-
-      <div class="sidebar-label">Cilësimet</div>
-      <button class="sidebar-item" onclick="showPage('general',this)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-        Cilësimet
-      </button>
+      <div class="slabel">Faqet</div>
+      <button class="sitem" onclick="go('homepage',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Homepage</button>
+      <button class="sitem" onclick="go('dogs',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="4"/><path d="m21 21-4.35-4.35"/></svg>Our Dogs</button>
+      <button class="sitem" onclick="go('forsale',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>Dogs for Sale</button>
+      <button class="sitem" onclick="go('expecting',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Expecting Litters</button>
+      <button class="sitem" onclick="go('puppies',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>Puppies</button>
+      <button class="sitem" onclick="go('clients',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Our Clients</button>
     </aside>
 
-    <main class="dash-main">
+    <main class="dmain">
 
       <!-- OVERVIEW -->
-      <div class="dash-page active" id="page-overview">
-        <div class="page-title">Mirë se erdhe! 👋</div>
-        <div class="page-subtitle">Menaxho të gjithë përmbajtjen e faqes nga këtu.</div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Our Dogs</div><div class="stat-value" id="stat-dogs">—</div></div>
-          <div class="stat-card"><div class="stat-label">For Sale</div><div class="stat-value" id="stat-forsale">—</div></div>
-          <div class="stat-card"><div class="stat-label">Puppies</div><div class="stat-value" id="stat-puppies">—</div></div>
-          <div class="stat-card"><div class="stat-label">Clients</div><div class="stat-value" id="stat-clients">—</div></div>
+      <div class="dpage active" id="page-overview">
+        <div class="ptitle">Mirë se erdhe! 👋</div>
+        <div class="psub">Gjithçka mund të menaxhohet nga këtu — shto, edito, fshi.</div>
+        <div class="sgrid">
+          <div class="scard"><div class="slbl">Our Dogs</div><div class="sval" id="st-dogs">—</div></div>
+          <div class="scard"><div class="slbl">For Sale</div><div class="sval" id="st-sale">—</div></div>
+          <div class="scard"><div class="slbl">Expecting</div><div class="sval" id="st-exp">—</div></div>
+          <div class="scard"><div class="slbl">Puppies</div><div class="sval" id="st-pup">—</div></div>
+          <div class="scard"><div class="slbl">Clients</div><div class="sval" id="st-cli">—</div></div>
         </div>
         <div class="card">
-          <div class="card-title">Si funksionon</div>
-          <p style="font-size:14px;color:#666;line-height:1.9;">
-            ✅ Zgjidh seksionin nga menyja majtas<br>
-            ✅ Shto foto, emër, përshkrim dhe kliko <strong>"Shto"</strong><br>
-            ✅ Ndryshimet shfaqen menjëherë për <strong>të gjithë vizitorët</strong><br>
-            ✅ Kliko <strong>"Fshi"</strong> pranë çdo artikulli për ta hequr
+          <div class="ctitle">Si funksionon</div>
+          <p style="font-size:13px;color:#555;line-height:1.9">
+            ✅ Zgjidh seksionin nga menyja<br>
+            ✅ Shto foto + tekst → kliko <strong>"+ Shto"</strong><br>
+            ✅ Kliko <strong>"Edit"</strong> për të ndryshuar çdo gjë<br>
+            ✅ Kliko <strong>"Fshi"</strong> për të hequr<br>
+            ✅ Ndryshimet shfaqen menjëherë për <strong>të gjithë vizitorët</strong>
           </p>
         </div>
       </div>
 
-      <!-- OUR DOGS -->
-      <div class="dash-page" id="page-dogs">
-        <div class="page-title">🐕 Our Dogs</div>
-        <div class="page-subtitle">Qentë e kenneli-t tuaj. Shfaqen te faqja "Our Dogs".</div>
+      <!-- HOMEPAGE EDITOR -->
+      <div class="dpage" id="page-homepage">
+        <div class="ptitle">🏠 Homepage</div>
+        <div class="psub">Ndrysho tekstet dhe përmbajtjen e homepage-it.</div>
         <div class="card">
-          <div class="card-title">Shto qen të ri</div>
-          <div class="field"><label>Foto</label><input type="file" id="dogs-photo" accept="image/*" onchange="previewPhoto(this,'dogs-preview')"></div>
-          <div class="photo-preview" id="dogs-preview"><img></div>
-          <div class="field-row">
-            <div class="field"><label>Emri</label><input type="text" id="dogs-name" placeholder="p.sh. Rex von Gashi"></div>
-            <div class="field"><label>Kategoria</label><input type="text" id="dogs-cat" placeholder="p.sh. Stud Male, Breeding Female..."></div>
+          <div class="ctitle">Hero Section (teksti i madh)</div>
+          <div class="hp-section">
+            <div class="hp-section-title">Titulli kryesor</div>
+            <div class="field"><label>Rreshti 1 (i theksuar)</label><input type="text" id="hp-h1" placeholder="Let's discuss your ideal companion"></div>
+            <div class="field"><label>Nëntitulli</label><textarea id="hp-sub" placeholder="Whether you're seeking..."></textarea></div>
+            <div class="field"><label>Butoni CTA (teksti)</label><input type="text" id="hp-cta" placeholder="Get Started"></div>
           </div>
-          <div class="field"><label>Përshkrimi</label><textarea id="dogs-desc" placeholder="Shkruaj rreth këtij qeni..."></textarea></div>
-          <button class="btn-add" onclick="addItem('dogs')">+ Shto te Faqja</button>
-          <div class="add-status" id="dogs-status"></div>
+          <button class="btn-add" onclick="saveHP()">💾 Ruaj Homepage</button>
+          <div class="add-status" id="hp-status"></div>
         </div>
         <div class="card">
-          <div class="card-title">Qentë aktualë</div>
-          <div id="dogs-list"><p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p></div>
+          <div class="ctitle">Informacioni i Kontaktit (footer + faqe)</div>
+          <div class="frow">
+            <div class="field"><label>Telefoni</label><input type="text" id="hp-phone" placeholder="+383 49 446 668"></div>
+            <div class="field"><label>Email</label><input type="email" id="hp-email" placeholder="Gashikennel@gmail.com"></div>
+          </div>
+          <div class="field"><label>Adresa</label><input type="text" id="hp-address" placeholder="Glogovac, Kosovo"></div>
+          <div class="frow">
+            <div class="field"><label>Instagram URL</label><input type="url" id="hp-ig" placeholder="https://instagram.com/..."></div>
+            <div class="field"><label>Facebook URL</label><input type="url" id="hp-fb" placeholder="https://facebook.com/..."></div>
+          </div>
+          <button class="btn-add" onclick="saveHP()">💾 Ruaj</button>
         </div>
+      </div>
+
+      <!-- OUR DOGS -->
+      <div class="dpage" id="page-dogs">
+        <div class="ptitle">🐕 Our Dogs</div>
+        <div class="psub">Shto, edito ose fshi çdo qen nga kjo faqe.</div>
+        <div class="card">
+          <div class="ctitle">Shto qen të ri</div>
+          <div class="field"><label>Foto</label><input type="file" id="in-dogs-photo" accept="image/*" onchange="prevPhoto(this,'prev-dogs')"><div class="prev-img" id="prev-dogs"><img></div></div>
+          <div class="frow">
+            <div class="field"><label>Emri</label><input type="text" id="in-dogs-name" placeholder="p.sh. Rex von Gashi"></div>
+            <div class="field"><label>Kategoria</label><input type="text" id="in-dogs-cat" placeholder="p.sh. Stud Male, Breeding Female"></div>
+          </div>
+          <div class="field"><label>Përshkrimi</label><textarea id="in-dogs-desc" placeholder="Shkruaj rreth këtij qeni..."></textarea></div>
+          <button class="btn-add" onclick="addItem('dogs')">+ Shto</button>
+          <div class="add-status" id="st-dogs-add"></div>
+        </div>
+        <div class="card"><div class="ctitle">Të gjithë qentë</div><div id="list-dogs"><p style="color:#bbb;font-size:13px">Duke ngarkuar...</p></div></div>
       </div>
 
       <!-- DOGS FOR SALE -->
-      <div class="dash-page" id="page-forsale">
-        <div class="page-title">🏷️ Dogs for Sale</div>
-        <div class="page-subtitle">Qentë për shitje. Mund t'u vendosësh statusin: Available, Reserved, ose Sold.</div>
+      <div class="dpage" id="page-forsale">
+        <div class="ptitle">🏷️ Dogs for Sale</div>
+        <div class="psub">Menaxho qentë për shitje. Ndrysho statusin: Available / Reserved / Sold.</div>
         <div class="card">
-          <div class="card-title">Shto qen për shitje</div>
-          <div class="field"><label>Foto</label><input type="file" id="forsale-photo" accept="image/*" onchange="previewPhoto(this,'forsale-preview')"></div>
-          <div class="photo-preview" id="forsale-preview"><img></div>
-          <div class="field-row">
-            <div class="field"><label>Emri</label><input type="text" id="forsale-name" placeholder="p.sh. Nero von Gashi"></div>
-            <div class="field"><label>Çmimi</label><input type="text" id="forsale-price" placeholder="p.sh. €2500 ose Contact us"></div>
+          <div class="ctitle">Shto qen për shitje</div>
+          <div class="field"><label>Foto</label><input type="file" id="in-forsale-photo" accept="image/*" onchange="prevPhoto(this,'prev-forsale')"><div class="prev-img" id="prev-forsale"><img></div></div>
+          <div class="frow">
+            <div class="field"><label>Emri</label><input type="text" id="in-forsale-name" placeholder="Nero von Gashi"></div>
+            <div class="field"><label>Çmimi</label><input type="text" id="in-forsale-price" placeholder="€2500"></div>
           </div>
-          <div class="field-row">
-            <div class="field"><label>Raca</label><input type="text" id="forsale-breed" placeholder="p.sh. Belgian Malinois"></div>
-            <div class="field"><label>Statusi</label>
-              <select id="forsale-status">
-                <option value="available">✅ Available</option>
-                <option value="reserved">🟡 Reserved</option>
-                <option value="sold">🔴 Sold</option>
-              </select>
-            </div>
+          <div class="frow">
+            <div class="field"><label>Raca</label><input type="text" id="in-forsale-breed" placeholder="Belgian Malinois"></div>
+            <div class="field"><label>Statusi</label><select id="in-forsale-status"><option value="available">✅ Available</option><option value="reserved">🟡 Reserved</option><option value="sold">🔴 Sold</option></select></div>
           </div>
-          <div class="field"><label>Përshkrimi</label><textarea id="forsale-desc" placeholder="Rreth këtij qeni..."></textarea></div>
-          <button class="btn-add" onclick="addItem('forsale')">+ Shto te Faqja</button>
-          <div class="add-status" id="forsale-status-msg"></div>
+          <div class="field"><label>Përshkrimi</label><textarea id="in-forsale-desc" placeholder="Rreth këtij qeni..."></textarea></div>
+          <button class="btn-add" onclick="addItem('forsale')">+ Shto</button>
+          <div class="add-status" id="st-forsale-add"></div>
         </div>
-        <div class="card">
-          <div class="card-title">Qentë për shitje</div>
-          <div id="forsale-list"><p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p></div>
-        </div>
+        <div class="card"><div class="ctitle">Të gjithë qentë për shitje</div><div id="list-forsale"><p style="color:#bbb;font-size:13px">Duke ngarkuar...</p></div></div>
       </div>
 
-      <!-- EXPECTING LITTERS -->
-      <div class="dash-page" id="page-expecting">
-        <div class="page-title">🤰 Expecting Litters</div>
-        <div class="page-subtitle">Litters të pritshme. Shfaqen te faqja "Expecting Litters".</div>
+      <!-- EXPECTING -->
+      <div class="dpage" id="page-expecting">
+        <div class="ptitle">🤰 Expecting Litters</div>
+        <div class="psub">Shto ose fshi litters të pritshme.</div>
         <div class="card">
-          <div class="card-title">Shto litter të ri</div>
-          <div class="field"><label>Foto (e nënës ose çiftit)</label><input type="file" id="expecting-photo" accept="image/*" onchange="previewPhoto(this,'expecting-preview')"></div>
-          <div class="photo-preview" id="expecting-preview"><img></div>
-          <div class="field-row">
-            <div class="field"><label>Nëna (Dam)</label><input type="text" id="expecting-dam" placeholder="p.sh. Dina Ascruvium Devil"></div>
-            <div class="field"><label>Babai (Sire)</label><input type="text" id="expecting-sire" placeholder="p.sh. Gunner Gim Strasevski"></div>
+          <div class="ctitle">Shto litter</div>
+          <div class="field"><label>Foto</label><input type="file" id="in-expecting-photo" accept="image/*" onchange="prevPhoto(this,'prev-expecting')"><div class="prev-img" id="prev-expecting"><img></div></div>
+          <div class="frow">
+            <div class="field"><label>Nëna (Dam)</label><input type="text" id="in-expecting-dam" placeholder="Dina Ascruvium Devil"></div>
+            <div class="field"><label>Babai (Sire)</label><input type="text" id="in-expecting-sire" placeholder="Gunner Gim Strasevski"></div>
           </div>
-          <div class="field-row">
-            <div class="field"><label>Data e pritshme</label><input type="text" id="expecting-date" placeholder="p.sh. September 2025"></div>
-            <div class="field"><label>Numri i puppies (rreth)</label><input type="text" id="expecting-count" placeholder="p.sh. 6-8 puppies"></div>
+          <div class="frow">
+            <div class="field"><label>Data e pritshme</label><input type="text" id="in-expecting-date" placeholder="September 2025"></div>
+            <div class="field"><label>Numri i puppies</label><input type="text" id="in-expecting-count" placeholder="6-8 puppies"></div>
           </div>
-          <div class="field"><label>Informacion shtesë</label><textarea id="expecting-desc" placeholder="Çfarë të tjera duhet të dinë blerësit..."></textarea></div>
-          <button class="btn-add" onclick="addItem('expecting')">+ Shto te Faqja</button>
-          <div class="add-status" id="expecting-status"></div>
+          <div class="field"><label>Informacion shtesë</label><textarea id="in-expecting-desc"></textarea></div>
+          <button class="btn-add" onclick="addItem('expecting')">+ Shto</button>
+          <div class="add-status" id="st-expecting-add"></div>
         </div>
-        <div class="card">
-          <div class="card-title">Litters aktuale</div>
-          <div id="expecting-list"><p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p></div>
-        </div>
+        <div class="card"><div class="ctitle">Litters aktuale</div><div id="list-expecting"><p style="color:#bbb;font-size:13px">Duke ngarkuar...</p></div></div>
       </div>
 
       <!-- PUPPIES -->
-      <div class="dash-page" id="page-puppies">
-        <div class="page-title">🐾 Puppies</div>
-        <div class="page-subtitle">Puppies të disponueshme. Shfaqen te faqja "Puppies".</div>
+      <div class="dpage" id="page-puppies">
+        <div class="ptitle">🐾 Puppies</div>
+        <div class="psub">Menaxho puppies — ndrysho statusin direkt nga lista.</div>
         <div class="card">
-          <div class="card-title">Shto puppy</div>
-          <div class="field"><label>Foto</label><input type="file" id="puppies-photo" accept="image/*" onchange="previewPhoto(this,'puppies-preview')"></div>
-          <div class="photo-preview" id="puppies-preview"><img></div>
-          <div class="field-row">
-            <div class="field"><label>Emri / Titulli</label><input type="text" id="puppies-name" placeholder="p.sh. Male #1 — Nero"></div>
-            <div class="field"><label>Mosha</label><input type="text" id="puppies-age" placeholder="p.sh. 8 weeks, 3 months..."></div>
+          <div class="ctitle">Shto puppy</div>
+          <div class="field"><label>Foto</label><input type="file" id="in-puppies-photo" accept="image/*" onchange="prevPhoto(this,'prev-puppies')"><div class="prev-img" id="prev-puppies"><img></div></div>
+          <div class="frow">
+            <div class="field"><label>Emri</label><input type="text" id="in-puppies-name" placeholder="Male #1 — Nero"></div>
+            <div class="field"><label>Mosha</label><input type="text" id="in-puppies-age" placeholder="8 weeks"></div>
           </div>
-          <div class="field-row">
-            <div class="field"><label>Çmimi</label><input type="text" id="puppies-price" placeholder="p.sh. €1800"></div>
-            <div class="field"><label>Statusi</label>
-              <select id="puppies-status">
-                <option value="available">✅ Available</option>
-                <option value="reserved">🟡 Reserved</option>
-                <option value="sold">🔴 Sold</option>
-              </select>
-            </div>
+          <div class="frow">
+            <div class="field"><label>Çmimi</label><input type="text" id="in-puppies-price" placeholder="€1800"></div>
+            <div class="field"><label>Statusi</label><select id="in-puppies-status"><option value="available">✅ Available</option><option value="reserved">🟡 Reserved</option><option value="sold">🔴 Sold</option></select></div>
           </div>
-          <div class="field"><label>Përshkrimi</label><textarea id="puppies-desc" placeholder="Rreth këtij puppy..."></textarea></div>
-          <button class="btn-add" onclick="addItem('puppies')">+ Shto te Faqja</button>
-          <div class="add-status" id="puppies-status-msg"></div>
+          <div class="field"><label>Përshkrimi</label><textarea id="in-puppies-desc"></textarea></div>
+          <button class="btn-add" onclick="addItem('puppies')">+ Shto</button>
+          <div class="add-status" id="st-puppies-add"></div>
         </div>
-        <div class="card">
-          <div class="card-title">Puppies aktuale</div>
-          <div id="puppies-list"><p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p></div>
-        </div>
+        <div class="card"><div class="ctitle">Puppies aktuale</div><div id="list-puppies"><p style="color:#bbb;font-size:13px">Duke ngarkuar...</p></div></div>
       </div>
 
       <!-- CLIENTS -->
-      <div class="dash-page" id="page-clients">
-        <div class="page-title">⭐ Our Clients</div>
-        <div class="page-subtitle">Reviews dhe foto të klientëve. Shfaqen te faqja "Our Clients".</div>
+      <div class="dpage" id="page-clients">
+        <div class="ptitle">⭐ Our Clients</div>
+        <div class="psub">Shto reviews dhe foto të klientëve.</div>
         <div class="card">
-          <div class="card-title">Shto klient / review</div>
-          <div class="field"><label>Foto e klientit (me qenin)</label><input type="file" id="clients-photo" accept="image/*" onchange="previewPhoto(this,'clients-preview')"></div>
-          <div class="photo-preview" id="clients-preview"><img></div>
-          <div class="field-row">
-            <div class="field"><label>Emri i klientit</label><input type="text" id="clients-name" placeholder="p.sh. Marco R."></div>
-            <div class="field"><label>Vendi</label><input type="text" id="clients-country" placeholder="p.sh. Italy 🇮🇹"></div>
+          <div class="ctitle">Shto klient</div>
+          <div class="field"><label>Foto (me qenin)</label><input type="file" id="in-clients-photo" accept="image/*" onchange="prevPhoto(this,'prev-clients')"><div class="prev-img" id="prev-clients"><img></div></div>
+          <div class="frow">
+            <div class="field"><label>Emri</label><input type="text" id="in-clients-name" placeholder="Marco R."></div>
+            <div class="field"><label>Vendi</label><input type="text" id="in-clients-country" placeholder="Italy 🇮🇹"></div>
           </div>
-          <div class="field-row">
-            <div class="field"><label>Qeni i blerë</label><input type="text" id="clients-dog" placeholder="p.sh. Rex von Gashi"></div>
-            <div class="field"><label>Vlerësimi</label>
-              <select id="clients-rating">
-                <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
-                <option value="4">⭐⭐⭐⭐ (4/5)</option>
-                <option value="3">⭐⭐⭐ (3/5)</option>
-              </select>
-            </div>
+          <div class="frow">
+            <div class="field"><label>Qeni i blerë</label><input type="text" id="in-clients-dog" placeholder="Rex von Gashi"></div>
+            <div class="field"><label>Vlerësimi</label><select id="in-clients-rating"><option value="5">⭐⭐⭐⭐⭐</option><option value="4">⭐⭐⭐⭐</option><option value="3">⭐⭐⭐</option></select></div>
           </div>
-          <div class="field"><label>Review / Koment</label><textarea id="clients-review" placeholder="Çfarë tha klienti..."></textarea></div>
-          <button class="btn-add" onclick="addItem('clients')">+ Shto te Faqja</button>
-          <div class="add-status" id="clients-status"></div>
+          <div class="field"><label>Review / Koment</label><textarea id="in-clients-review" placeholder="Çfarë tha klienti..."></textarea></div>
+          <button class="btn-add" onclick="addItem('clients')">+ Shto</button>
+          <div class="add-status" id="st-clients-add"></div>
         </div>
-        <div class="card">
-          <div class="card-title">Klientët aktualë</div>
-          <div id="clients-list"><p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p></div>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div class="dash-page" id="page-general">
-        <div class="page-title">⚙️ Cilësimet</div>
-        <div class="page-subtitle">Informacione të përgjithshme të faqes.</div>
-        <div class="card">
-          <div class="card-title">Kontakti</div>
-          <div class="field"><label>Adresa</label><input type="text" data-field="address" placeholder="Glogovac, Kosovo"></div>
-          <div class="field"><label>Telefoni</label><input type="text" data-field="phone" placeholder="+383 49 446 668"></div>
-          <div class="field"><label>Email</label><input type="email" data-field="email" placeholder="Gashikennel@gmail.com"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Social Media</div>
-          <div class="field"><label>Instagram URL</label><input type="url" data-field="instagram_url" placeholder="https://www.instagram.com/gashi_kennel"></div>
-          <div class="field"><label>Facebook URL</label><input type="url" data-field="facebook_url" placeholder="https://www.facebook.com/gashikennel"></div>
-          <div class="field"><label>WhatsApp</label><input type="text" data-field="whatsapp" placeholder="+38349446668"></div>
-        </div>
+        <div class="card"><div class="ctitle">Klientët aktualë</div><div id="list-clients"><p style="color:#bbb;font-size:13px">Duke ngarkuar...</p></div></div>
       </div>
 
     </main>
-  </div>
-
-  <!-- Save Bar (only for settings) -->
-  <div class="save-bar" id="save-bar" style="display:none;">
-    <div class="save-status" id="save-status">Ndryshime të paruajtura</div>
-    <button class="btn-save" onclick="saveAll()">💾 Ruaj Ndryshimet</button>
   </div>
 </div>
 
 <script src="../assets/gashi-firebase.js"></script>
 <script>
-var AUTH_KEY = 'gashi_auth';
-var PASS = 'gashi2025';
-var CMS_KEY = 'gashi_cms_content';
-var currentPhotos = {};
+var AUTH='gashi_auth', PASS='gashi2025', HP_KEY='gashi_hp';
+var photos={};
 
-// ── Auth ──
-function doLogin() {
-  var v = document.getElementById('pwd-input').value;
-  if (v === PASS) {
-    sessionStorage.setItem(AUTH_KEY, 'true');
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    initDashboard();
+/* ── Auth ── */
+function login(){
+  if(document.getElementById('pwd').value===PASS){
+    sessionStorage.setItem(AUTH,'1');
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('dash').style.display='block';
+    init();
   } else {
-    var err = document.getElementById('login-error');
-    err.style.display = 'block';
-    setTimeout(function(){ err.style.display='none'; }, 2500);
+    var e=document.getElementById('lerr'); e.style.display='block';
+    setTimeout(function(){e.style.display='none'},2500);
   }
 }
-function doLogout() { sessionStorage.removeItem(AUTH_KEY); location.reload(); }
-document.getElementById('pwd-input').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
-
-if (sessionStorage.getItem(AUTH_KEY) === 'true') {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  initDashboard();
+function logout(){sessionStorage.removeItem(AUTH);location.reload()}
+document.getElementById('pwd').onkeydown=function(e){if(e.key==='Enter')login()};
+if(sessionStorage.getItem(AUTH)){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('dash').style.display='block';
 }
 
-// ── Navigation ──
-function showPage(name, btn) {
-  document.querySelectorAll('.dash-page').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelectorAll('.sidebar-item').forEach(function(b){ b.classList.remove('active'); });
+/* ── Navigation ── */
+function go(name,btn){
+  document.querySelectorAll('.dpage').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.sitem').forEach(function(b){b.classList.remove('active')});
   document.getElementById('page-'+name).classList.add('active');
   btn.classList.add('active');
-  // Show save bar only on settings
-  document.getElementById('save-bar').style.display = (name === 'general') ? 'flex' : 'none';
-  // Load list if content page
-  var lists = ['dogs','forsale','expecting','puppies','clients'];
-  if (lists.indexOf(name) !== -1) loadList(name);
+  var lists=['dogs','forsale','expecting','puppies','clients'];
+  if(lists.indexOf(name)!==-1) loadList(name);
+  if(name==='homepage') loadHP();
 }
 
-// ── Photo Preview ──
-function previewPhoto(input, previewId) {
-  if (!input.files || !input.files[0]) return;
-  var file = input.files[0];
-  var section = input.id.split('-')[0];
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    currentPhotos[section] = e.target.result;
-    var prev = document.getElementById(previewId);
-    prev.style.display = 'block';
-    prev.querySelector('img').src = e.target.result;
+/* ── Photo preview ── */
+function prevPhoto(inp,pid){
+  if(!inp.files||!inp.files[0])return;
+  var sec=inp.id.replace('in-','').replace('-photo','');
+  var r=new FileReader();
+  r.onload=function(e){
+    photos[sec]=e.target.result;
+    var p=document.getElementById(pid);
+    p.style.display='block'; p.querySelector('img').src=e.target.result;
   };
-  reader.readAsDataURL(file);
+  r.readAsDataURL(inp.files[0]);
 }
 
-// ── Get form data by section ──
-function getFormData(section) {
-  var data = { image: currentPhotos[section] || '' };
-  switch(section) {
-    case 'dogs':
-      data.name = document.getElementById('dogs-name').value.trim();
-      data.category = document.getElementById('dogs-cat').value.trim();
-      data.description = document.getElementById('dogs-desc').value.trim();
-      if (!data.name || !data.description) return null;
-      break;
-    case 'forsale':
-      data.name = document.getElementById('forsale-name').value.trim();
-      data.price = document.getElementById('forsale-price').value.trim();
-      data.breed = document.getElementById('forsale-breed').value.trim();
-      data.status = document.getElementById('forsale-status').value;
-      data.description = document.getElementById('forsale-desc').value.trim();
-      if (!data.name) return null;
-      break;
-    case 'expecting':
-      data.dam = document.getElementById('expecting-dam').value.trim();
-      data.sire = document.getElementById('expecting-sire').value.trim();
-      data.date = document.getElementById('expecting-date').value.trim();
-      data.count = document.getElementById('expecting-count').value.trim();
-      data.description = document.getElementById('expecting-desc').value.trim();
-      data.name = (data.dam && data.sire) ? data.dam + ' × ' + data.sire : data.dam || data.sire;
-      if (!data.name) return null;
-      break;
-    case 'puppies':
-      data.name = document.getElementById('puppies-name').value.trim();
-      data.age = document.getElementById('puppies-age').value.trim();
-      data.price = document.getElementById('puppies-price').value.trim();
-      data.status = document.getElementById('puppies-status').value;
-      data.description = document.getElementById('puppies-desc').value.trim();
-      if (!data.name) return null;
-      break;
-    case 'clients':
-      data.name = document.getElementById('clients-name').value.trim();
-      data.country = document.getElementById('clients-country').value.trim();
-      data.dog = document.getElementById('clients-dog').value.trim();
-      data.rating = document.getElementById('clients-rating').value;
-      data.review = document.getElementById('clients-review').value.trim();
-      if (!data.name || !data.review) return null;
-      break;
-  }
-  return data;
+/* ── Field config per section ── */
+var FIELDS={
+  dogs:{name:'in-dogs-name',cat:'in-dogs-cat',desc:'in-dogs-desc'},
+  forsale:{name:'in-forsale-name',price:'in-forsale-price',breed:'in-forsale-breed',status:'in-forsale-status',desc:'in-forsale-desc'},
+  expecting:{dam:'in-expecting-dam',sire:'in-expecting-sire',date:'in-expecting-date',count:'in-expecting-count',desc:'in-expecting-desc'},
+  puppies:{name:'in-puppies-name',age:'in-puppies-age',price:'in-puppies-price',status:'in-puppies-status',desc:'in-puppies-desc'},
+  clients:{name:'in-clients-name',country:'in-clients-country',dog:'in-clients-dog',rating:'in-clients-rating',review:'in-clients-review'}
+};
+
+function getVal(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+
+function addItem(sec){
+  var f=FIELDS[sec], data={image:photos[sec]||''};
+  Object.keys(f).forEach(function(k){data[k]=getVal(f[k]);});
+  if(sec==='expecting'){data.name=(data.dam&&data.sire)?data.dam+' × '+data.sire:(data.dam||data.sire||'Litter');}
+  var col=sec==='forsale'?'dogs_for_sale':sec;
+  var sid='st-'+sec+'-add';
+  var s=document.getElementById(sid);
+  s.textContent='⏳ Duke ruajtur...'; s.style.color='#f37423'; s.style.display='block';
+  GashiDB.add(col,data).then(function(){
+    // Reset
+    Object.values(f).forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+    var fi=document.getElementById('in-'+sec+'-photo');if(fi)fi.value='';
+    var pv=document.getElementById('prev-'+sec);if(pv)pv.style.display='none';
+    photos[sec]='';
+    s.textContent='✓ U shtua! Shfaqet menjëherë.'; s.style.color='#22c55e';
+    setTimeout(function(){s.style.display='none'},3500);
+    loadList(sec); loadStats();
+  }).catch(function(){s.textContent='⚠ Gabim!'; s.style.color='#ef4444';});
 }
 
-// ── Reset form ──
-function resetForm(section) {
-  var ids = {
-    dogs: ['dogs-name','dogs-cat','dogs-desc'],
-    forsale: ['forsale-name','forsale-price','forsale-breed','forsale-desc'],
-    expecting: ['expecting-dam','expecting-sire','expecting-date','expecting-count','expecting-desc'],
-    puppies: ['puppies-name','puppies-age','puppies-price','puppies-desc'],
-    clients: ['clients-name','clients-country','clients-dog','clients-review']
+/* ── Delete ── */
+function delItem(sec,key){
+  if(!confirm('Fshi këtë artikull?'))return;
+  var col=sec==='forsale'?'dogs_for_sale':sec;
+  GashiDB.remove(col,key).then(function(){loadList(sec);loadStats();});
+}
+
+/* ── Change status inline ── */
+function changeStatus(sec,key,val){
+  var col=sec==='forsale'?'dogs_for_sale':sec;
+  GashiDB.update(col,key,{status:val});
+}
+
+/* ── Edit inline ── */
+function toggleEdit(id){
+  var ef=document.getElementById('ef-'+id);
+  ef.classList.toggle('open');
+}
+function saveEdit(sec,key){
+  var col=sec==='forsale'?'dogs_for_sale':sec;
+  var data={
+    name: document.getElementById('en-'+key+'-name')?document.getElementById('en-'+key+'-name').value:'',
+    category: document.getElementById('en-'+key+'-cat')?document.getElementById('en-'+key+'-cat').value:'',
+    description: document.getElementById('en-'+key+'-desc')?document.getElementById('en-'+key+'-desc').value:'',
+    price: document.getElementById('en-'+key+'-price')?document.getElementById('en-'+key+'-price').value:'',
+    breed: document.getElementById('en-'+key+'-breed')?document.getElementById('en-'+key+'-breed').value:''
   };
-  (ids[section]||[]).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
-  currentPhotos[section] = '';
-  var fileInput = document.getElementById(section+'-photo');
-  if (fileInput) fileInput.value = '';
-  var prev = document.getElementById(section+'-preview');
-  if (prev) prev.style.display = 'none';
+  // Remove empty keys
+  Object.keys(data).forEach(function(k){if(!data[k])delete data[k];});
+  GashiDB.update(col,key,data).then(function(){loadList(sec);});
 }
 
-// ── Add item ──
-function addItem(section) {
-  var data = getFormData(section);
-  if (!data) { alert('Plotëso të paktën emrin!'); return; }
-
-  var statusId = section + (section==='forsale'?'-status-msg':section==='puppies'?'-status-msg':'-status');
-  var statusEl = document.getElementById(statusId);
-  statusEl.textContent = '⏳ Duke ruajtur...';
-  statusEl.style.color = '#f37423';
-  statusEl.style.display = 'block';
-
-  var collection = section === 'forsale' ? 'dogs_for_sale' : section;
-  GashiDB.add(collection, data).then(function() {
-    resetForm(section);
-    statusEl.textContent = '✓ U shtua! Shfaqet menjëherë në faqe.';
-    statusEl.style.color = '#22c55e';
-    setTimeout(function(){ statusEl.style.display='none'; }, 4000);
-    loadList(section);
-    loadStats();
-  }).catch(function(e) {
-    statusEl.textContent = '⚠ Gabim! Kontrollo lidhjen.';
-    statusEl.style.color = '#ef4444';
-    console.error(e);
-  });
-}
-
-// ── Delete item ──
-function delItem(section, key) {
-  if (!confirm('A je i sigurt?')) return;
-  var collection = section === 'forsale' ? 'dogs_for_sale' : section;
-  GashiDB.remove(collection, key).then(function() { loadList(section); loadStats(); });
-}
-
-// ── Update status (for forsale/puppies) ──
-function updateStatus(section, key, newStatus) {
-  var collection = section === 'forsale' ? 'dogs_for_sale' : section;
-  GashiDB.update(collection, key, { status: newStatus });
-}
-
-// ── Load list ──
-function loadList(section) {
-  var listEl = document.getElementById(section+'-list');
-  if (!listEl) return;
-  listEl.innerHTML = '<p style="color:#aaa;font-size:14px;">Duke ngarkuar...</p>';
-  var collection = section === 'forsale' ? 'dogs_for_sale' : section;
-  GashiDB.getAll(collection).then(function(items) {
-    if (!items || !items.length) {
-      listEl.innerHTML = '<p style="color:#aaa;font-size:14px;">Asnjë artikull ende.</p>';
+/* ── Load list ── */
+function loadList(sec){
+  var listEl=document.getElementById('list-'+sec);
+  if(!listEl)return;
+  listEl.innerHTML='<p style="color:#bbb;font-size:13px">Duke ngarkuar...</p>';
+  var col=sec==='forsale'?'dogs_for_sale':sec;
+  GashiDB.getAll(col).then(function(items){
+    if(!items||!items.length){
+      listEl.innerHTML='<p style="color:#bbb;font-size:13px">Asnjë artikull ende.</p>';
       return;
     }
-    listEl.innerHTML = items.map(function(item) {
-      var statusBadge = '';
-      if (item.status) {
-        var bc = item.status==='available'?'badge-green':item.status==='reserved'?'badge-yellow':'badge-red';
-        var sl = item.status==='available'?'Available':item.status==='reserved'?'Reserved':'Sold';
-        statusBadge = ' <span class="badge '+bc+'">'+sl+'</span>';
-      }
-      var ratingStars = item.rating ? '⭐'.repeat(parseInt(item.rating)) : '';
-      var label = item.category || item.breed || item.country || item.dog || '';
-      var desc = item.description || item.review || (item.dam ? item.dam+' × '+item.sire : '') || '';
-      return '<div class="item-list-row">' +
-        '<div class="item-thumb">' + (item.image ? '<img src="'+item.image+'">' : '🐕') + '</div>' +
-        '<div class="item-info">' +
-          '<div class="item-name">' + (item.name||'—') + statusBadge + '</div>' +
-          (label ? '<div class="item-cat">'+label+'</div>' : '') +
-          (item.price ? '<div class="item-cat" style="color:#1a1a1a;font-weight:700;">'+item.price+'</div>' : '') +
-          (ratingStars ? '<div style="font-size:12px;">'+ratingStars+'</div>' : '') +
-          (item.date ? '<div class="item-desc">📅 '+item.date+(item.count?' · '+item.count:'')+'</div>' : '') +
-          '<div class="item-desc">'+(desc.substring(0,70)||'')+'</div>' +
-        '</div>' +
-        (item.status ? '<select onchange="updateStatus(\''+section+'\',\''+item._key+'\',this.value)" style="padding:6px 10px;border-radius:8px;border:1.5px solid #e8e8e8;font-family:Inter,sans-serif;font-size:12px;margin-right:8px;"><option value="available"'+(item.status==='available'?' selected':'')+'>Available</option><option value="reserved"'+(item.status==='reserved'?' selected':'')+'>Reserved</option><option value="sold"'+(item.status==='sold'?' selected':'')+'>Sold</option></select>' : '') +
-        '<button class="btn-del" onclick="delItem(\''+section+'\',\''+item._key+'\')">Fshi</button>' +
-        '</div>';
+    listEl.innerHTML=items.map(function(d){
+      var sbc=d.status==='sold'?'bg-red':d.status==='reserved'?'bg-yellow':'bg-green';
+      var sbl=d.status==='sold'?'Sold':d.status==='reserved'?'Reserved':'Available';
+      var thumb=d.image?'<img class="ithumb" src="'+d.image+'" alt="">':'<div class="ithumb">🐕</div>';
+      var statusSel=d.status?'<select class="btn-sm" style="padding:5px 8px;border:1.5px solid #e0e0e0;border-radius:7px;font-size:11px;font-family:Inter,sans-serif;" onchange="changeStatus(\''+sec+'\',\''+d._key+'\',this.value)"><option value="available"'+(d.status==='available'?' selected':'')+'>✅ Available</option><option value="reserved"'+(d.status==='reserved'?' selected':'')+'>🟡 Reserved</option><option value="sold"'+(d.status==='sold'?' selected':'')+'>🔴 Sold</option></select>':'';
+      var label=d.category||d.breed||d.country||'';
+      var sub=d.description||d.review||'';
+      // Edit form fields
+      var editFields='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">';
+      editFields+='<div><label style="font-size:11px;font-weight:600;color:#666;">Emri</label><input id="en-'+d._key+'-name" value="'+(d.name||'')+'" style="width:100%;padding:7px;border:1.5px solid #e0e0e0;border-radius:7px;font-size:12px;font-family:Inter,sans-serif;"></div>';
+      editFields+='<div><label style="font-size:11px;font-weight:600;color:#666;">Kategoria</label><input id="en-'+d._key+'-cat" value="'+(d.category||d.breed||'')+'" style="width:100%;padding:7px;border:1.5px solid #e0e0e0;border-radius:7px;font-size:12px;font-family:Inter,sans-serif;"></div>';
+      if(d.price!==undefined)editFields+='<div><label style="font-size:11px;font-weight:600;color:#666;">Çmimi</label><input id="en-'+d._key+'-price" value="'+(d.price||'')+'" style="width:100%;padding:7px;border:1.5px solid #e0e0e0;border-radius:7px;font-size:12px;font-family:Inter,sans-serif;"></div>';
+      editFields+='</div>';
+      editFields+='<div><label style="font-size:11px;font-weight:600;color:#666;">Përshkrimi / Review</label><textarea id="en-'+d._key+'-desc" style="width:100%;padding:7px;border:1.5px solid #e0e0e0;border-radius:7px;font-size:12px;font-family:Inter,sans-serif;min-height:60px;resize:vertical;">'+(d.description||d.review||'')+'</textarea></div>';
+      editFields+='<div style="margin-top:8px;display:flex;gap:8px;"><button class="btn-sm btn-save-edit" onclick="saveEdit(\''+sec+'\',\''+d._key+'\')">✓ Ruaj</button><button class="btn-sm" style="background:#f5f5f5;color:#888;" onclick="toggleEdit(\''+d._key+'\')">Anulo</button></div>';
+
+      return '<div class="irow">'+thumb+'<div class="iinfo"><div class="iname">'+(d.name||d.dam||'—')+(d.status?(' <span class="badge '+sbc+'">'+sbl+'</span>'):'')+'</div>'+(label?'<div class="icat">'+label+'</div>':'')+(d.price?'<div class="icat" style="color:#1a1a1a;font-weight:700;">'+d.price+'</div>':'')+(sub?'<div class="idesc">'+sub.substring(0,60)+'...</div>':'')+'</div><div class="ibtns">'+statusSel+'<button class="btn-sm btn-edit" onclick="toggleEdit(\''+d._key+'\')">✏️ Edit</button><button class="btn-sm btn-del" onclick="delItem(\''+sec+'\',\''+d._key+'\')">🗑 Fshi</button></div></div><div class="edit-form" id="ef-'+d._key+'">'+editFields+'</div>';
     }).join('');
   });
 }
 
-// ── Load stats ──
-function loadStats() {
-  ['dogs','dogs_for_sale','puppies','clients'].forEach(function(col, i) {
-    var ids = ['stat-dogs','stat-forsale','stat-puppies','stat-clients'];
-    GashiDB.getAll(col).then(function(items) {
-      document.getElementById(ids[i]).textContent = items ? items.length : 0;
-    }).catch(function(){ document.getElementById(ids[i]).textContent = '?'; });
+/* ── Stats ── */
+function loadStats(){
+  var cols=[['dogs','st-dogs'],['dogs_for_sale','st-sale'],['expecting','st-exp'],['puppies','st-pup'],['clients','st-cli']];
+  cols.forEach(function(c){
+    GashiDB.getAll(c[0]).then(function(items){
+      var el=document.getElementById(c[1]);
+      if(el)el.textContent=items?items.length:0;
+    }).catch(function(){});
   });
 }
 
-// ── Settings ──
-function loadFields() {
-  var data = {};
-  try { data = JSON.parse(localStorage.getItem(CMS_KEY)) || {}; } catch(e){}
-  document.querySelectorAll('[data-field]').forEach(function(el) {
-    if (data[el.getAttribute('data-field')]) el.value = data[el.getAttribute('data-field')];
+/* ── Homepage ── */
+function loadHP(){
+  var d={};try{d=JSON.parse(localStorage.getItem(HP_KEY))||{};}catch(e){}
+  ['h1','sub','cta','phone','email','address','ig','fb'].forEach(function(k){
+    var el=document.getElementById('hp-'+k);
+    if(el&&d[k])el.value=d[k];
   });
 }
-function saveAll() {
-  var data = {};
-  try { data = JSON.parse(localStorage.getItem(CMS_KEY)) || {}; } catch(e){}
-  document.querySelectorAll('[data-field]').forEach(function(el) {
-    if (el.value.trim()) data[el.getAttribute('data-field')] = el.value.trim();
+function saveHP(){
+  var d={};
+  ['h1','sub','cta','phone','email','address','ig','fb'].forEach(function(k){
+    var el=document.getElementById('hp-'+k);
+    if(el&&el.value.trim())d[k]=el.value.trim();
   });
-  localStorage.setItem(CMS_KEY, JSON.stringify(data));
-  var s = document.getElementById('save-status');
-  s.textContent = '✓ Ruajtur!'; s.className = 'save-status saved';
-  setTimeout(function(){ s.textContent='Ndryshime të paruajtura'; s.className='save-status'; }, 2500);
+  localStorage.setItem(HP_KEY,JSON.stringify(d));
+  var s=document.getElementById('hp-status');
+  s.textContent='✓ Ruajtur!'; s.style.color='#22c55e'; s.style.display='block';
+  setTimeout(function(){s.style.display='none'},3000);
 }
 
-function initDashboard() {
-  loadStats();
-  loadList('dogs');
-  loadFields();
-}
+/* ── Init ── */
+function init(){loadStats();}
+if(sessionStorage.getItem(AUTH))init();
 </script>
 </body>
 </html>

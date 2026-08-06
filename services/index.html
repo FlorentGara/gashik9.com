@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Our Dogs - gashik9.com</title>
+  <title>Our Dogs - Gashi-k9</title>
   <link rel="stylesheet" href="../assets/restored-theme.css">
   <script src="../assets/gashi-cms.js"></script>
   <script src="../assets/gashi-firebase.js"></script>
@@ -12,7 +12,7 @@
   <header class="topbar">
     <div class="shell nav">
       <a class="brand" href="../index.html"><img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n.jpg" alt="Gashi-k9"><span><b>Gashi-k9</b><small>Home</small></span></a>
-      <nav class="menu"><a class="" href="../index.html">Home</a><a class="" href="../who-we-are/index.html">Who We Are</a><a class="active" href="../services/index.html">Our Dogs</a><a class="" href="../dogs-for-sale/index.html">Dogs For Sale</a><a class="" href="../expecting-dogs/index.html">Expecting Litters</a><a class="" href="../puppies/index.html">Puppies</a><a class="" href="../our-clients/index.html">Our Clients</a><a class="" href="../get-in-touch/index.html">Get In Touch</a></nav>
+      <nav class="menu"><a href="../index.html">Home</a><a href="../who-we-are/index.html">Who We Are</a><a class="active" href="../services/index.html">Our Dogs</a><a href="../dogs-for-sale/index.html">Dogs For Sale</a><a href="../expecting-dogs/index.html">Expecting Litters</a><a href="../puppies/index.html">Puppies</a><a href="../our-clients/index.html">Our Clients</a><a href="../get-in-touch/index.html">Get In Touch</a></nav>
       <button class="menu-button" aria-label="Open menu">Menu</button>
     </div>
   </header>
@@ -22,82 +22,55 @@
     </section>
     <section class="section">
       <div class="shell profile-grid" id="dogs-grid">
-        <article class="profile-card">
-          <img src="../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg" alt="Gunner Gim Strasevski">
-          <div><span>Our main stud male</span><h2>Gunner Gim Strasevski</h2><p>Meet Gunner Gim Strasevski, our exceptional stud male and a true example of what a well-bred working dog should be. With a powerful build, strong bone structure, and a commanding presence, Gunner stands out the moment you see him — but it's his temperament and working ability that truly make him special.</p></div>
-        </article>
-        <article class="profile-card">
-          <img src="../wp-content/uploads/2025/05/IMG_6308-1024x683.jpeg" alt="Dina Ascruvium Devil">
-          <div><span>Breeding female</span><h2>Dina Ascruvium Devil</h2><p>Dina - The Soul of Our Breeding Program. Strong, smart, and incredibly well-balanced, she brings together everything we believe a working dog should be. She's got a powerful frame and a clean, athletic build, but it's her presence that stands out most.</p></div>
-        </article>
-        <article class="profile-card">
-          <img src="../wp-content/uploads/2025/05/ffd882c9-f6ee-41c2-aa84-1204a6477144-1024x683.jpg" alt="Puma von Gashi">
-          <div><span>Future in the making</span><h2>Puma von Gashi</h2><p>Meet Puma von Gashi, a young female we proudly bred ourselves. At just 10 months old, she's already showing all the signs of a future powerhouse. A direct granddaughter of Gunner Gim Strasevski.</p></div>
-        </article>
-        <article class="profile-card">
-          <img src="../wp-content/uploads/2025/05/IMG_0781-1024x683.jpg" alt="Freya von Gashi">
-          <div><span>Pick of the litter</span><h2>Freya von Gashi</h2><p>She is our pick of the litter from Hellboy x Dina. We got high hopes for her already. We will update her progress as she grows.</p></div>
-        </article>
+        <div style="text-align:center;padding:60px;color:#aaa;grid-column:1/-1;">Duke ngarkuar qentë...</div>
       </div>
     </section>
-    <script>
-      // Load extra dogs from Firebase — visible to ALL visitors
-      document.addEventListener('DOMContentLoaded', function() {
-        if (window.GashiDB) {
-          GashiDB.getDogs().then(function(dogs) {
-            var grid = document.getElementById('dogs-grid');
-            if (!grid || !dogs || !dogs.length) return;
-            dogs.forEach(function(dog) {
-              var card = document.createElement('article');
-              card.className = 'profile-card';
-              card.innerHTML =
-                '<img src="' + (dog.image || '../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg') + '" alt="' + dog.name + '" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'">' +
-                '<div><span>' + (dog.category || 'Our dog') + '</span><h2>' + dog.name + '</h2><p>' + dog.description + '</p></div>';
-              grid.appendChild(card);
-            });
-          }).catch(function(e) { console.log('Firebase:', e); });
-        }
-      });
-    </script>
   </main>
+  <script>
+  var DEFAULT_DOGS = [
+    { name:'Gunner Gim Strasevski', category:'Our main stud male', description:"Meet Gunner Gim Strasevski, our exceptional stud male and a true example of what a well-bred working dog should be. With a powerful build, strong bone structure, and a commanding presence, Gunner stands out the moment you see him.", image:'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg', isDefault:true, sortOrder:1 },
+    { name:'Dina Ascruvium Devil', category:'Breeding female', description:"Dina - The Soul of Our Breeding Program. Strong, smart, and incredibly well-balanced, she brings together everything we believe a working dog should be.", image:'../wp-content/uploads/2025/05/IMG_6308-1024x683.jpeg', isDefault:true, sortOrder:2 },
+    { name:'Puma von Gashi', category:'Future in the making', description:"Meet Puma von Gashi, a young female we proudly bred ourselves. At just 10 months old, she's already showing all the signs of a future powerhouse.", image:'../wp-content/uploads/2025/05/ffd882c9-f6ee-41c2-aa84-1204a6477144-1024x683.jpg', isDefault:true, sortOrder:3 },
+    { name:'Freya von Gashi', category:'Pick of the litter', description:"She is our pick of the litter from Hellboy x Dina. We got high hopes for her already. We will update her progress as she grows.", image:'../wp-content/uploads/2025/05/IMG_0781-1024x683.jpg', isDefault:true, sortOrder:4 }
+  ];
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var grid = document.getElementById('dogs-grid');
+    GashiDB.getAll('dogs').then(function(dogs) {
+      // If Firebase is empty, seed with defaults
+      if (!dogs || dogs.length === 0) {
+        Promise.all(DEFAULT_DOGS.map(function(d){ return GashiDB.add('dogs', d); }))
+          .then(function(){ return GashiDB.getAll('dogs'); })
+          .then(renderDogs);
+      } else {
+        renderDogs(dogs);
+      }
+    }).catch(function(){
+      // Fallback: show defaults if offline
+      renderDogsStatic(DEFAULT_DOGS);
+    });
+
+    function renderDogs(dogs) {
+      if (!dogs || !dogs.length) { grid.innerHTML='<div style="text-align:center;padding:60px;color:#aaa;grid-column:1/-1;">Nuk ka qenë aktualisht.</div>'; return; }
+      dogs.sort(function(a,b){ return (a.sortOrder||999)-(b.sortOrder||999); });
+      grid.innerHTML = dogs.map(function(d) {
+        return '<article class="profile-card"><img src="'+(d.image||'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg')+'" alt="'+d.name+'" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'"><div><span>'+(d.category||'Our dog')+'</span><h2>'+d.name+'</h2><p>'+d.description+'</p></div></article>';
+      }).join('');
+    }
+    function renderDogsStatic(dogs) {
+      grid.innerHTML = dogs.map(function(d) {
+        return '<article class="profile-card"><img src="'+d.image+'" alt="'+d.name+'"><div><span>'+d.category+'</span><h2>'+d.name+'</h2><p>'+d.description+'</p></div></article>';
+      }).join('');
+    }
+  });
+  </script>
 <footer class="site-footer-clean">
   <div class="sfc-inner">
-    <div class="sfc-brand">
-      <a href="../index.html">
-        <img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n-e1750623598149.jpg" alt="Gashi-k9 Home">
-      </a>
-      <p class="sfc-tagline">Elite Working Dogs from Kosovo</p>
-      <p class="sfc-contact">Glogovac, Kosovo<br>+383 49 446 668<br><a href="mailto:Gashikennel@gmail.com">Gashikennel@gmail.com</a></p>
-    </div>
-    <div class="sfc-links">
-      <h4>Links</h4>
-      <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../who-we-are/index.html">Who We Are</a></li>
-        <li><a href="../services/index.html">Our Dogs</a></li>
-        <li><a href="../dogs-for-sale/index.html">Dogs For Sale</a></li>
-        <li><a href="../expecting-dogs/index.html">Expecting Litters</a></li>
-        <li><a href="../puppies/index.html">Puppies</a></li>
-        <li><a href="../our-clients/index.html">Our Clients</a></li>
-        <li><a href="../get-in-touch/index.html">Get In Touch</a></li>
-      </ul>
-    </div>
-    <div class="sfc-social">
-      <h4>Follow Us</h4>
-      <div class="sfc-social-icons" id="footer-social-links">
-        <a href="https://www.instagram.com/gashi_kennel" target="_blank" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="https://www.facebook.com/gashikennel" target="_blank" aria-label="Facebook">
-          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        </a>
-      </div>
-    </div>
+    <div class="sfc-brand"><a href="../index.html"><img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n-e1750623598149.jpg" alt="Logo"></a><p class="sfc-tagline">Elite Working Dogs from Kosovo</p><p class="sfc-contact">Glogovac, Kosovo<br>+383 49 446 668<br><a href="mailto:Gashikennel@gmail.com">Gashikennel@gmail.com</a></p></div>
+    <div class="sfc-links"><h4>Links</h4><ul><li><a href="../index.html">Home</a></li><li><a href="../who-we-are/index.html">Who We Are</a></li><li><a href="../services/index.html">Our Dogs</a></li><li><a href="../dogs-for-sale/index.html">Dogs For Sale</a></li><li><a href="../expecting-dogs/index.html">Expecting Litters</a></li><li><a href="../puppies/index.html">Puppies</a></li><li><a href="../our-clients/index.html">Our Clients</a></li><li><a href="../get-in-touch/index.html">Get In Touch</a></li></ul></div>
+    <div class="sfc-social"><h4>Follow Us</h4><div class="sfc-social-icons"><a href="https://www.instagram.com/gashi_kennel" target="_blank"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a><a href="https://www.facebook.com/gashikennel" target="_blank"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a></div></div>
   </div>
-  <div class="sfc-bottom">
-    <p>Powered by: <a href="https://nhapa.digital" target="_blank" style="color:rgba(255,255,255,0.8);font-weight:700;">nhapa.digital</a></p>
-  </div>
+  <div class="sfc-bottom"><p>Powered by: <a href="https://nhapa.digital" target="_blank" style="color:rgba(255,255,255,0.8);font-weight:700;">nhapa.digital</a></p></div>
 </footer>
 </body>
 </html>
