@@ -12,14 +12,18 @@
       }
     });
 
-    // Add gear icon at bottom of menu for mobile
-    var gear = document.createElement("a");
-    gear.href = "../dashboard/index.html";
-    gear.innerHTML = "⚙️";
-    gear.style.marginTop = "auto"; // Push to bottom
-    gear.style.fontSize = "24px";
-    gear.style.color = "#f47320";
-    menu.appendChild(gear);
+    // Add gear icon at bottom of menu for mobile - only if not already added by gashi-render.js
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!document.querySelector('.admin-icon')) {
+        var gear = document.createElement("a");
+        gear.href = "../dashboard/index.html";
+        gear.innerHTML = "⚙️";
+        gear.style.marginTop = "auto";
+        gear.style.fontSize = "24px";
+        gear.style.color = "#f47320";
+        menu.appendChild(gear);
+      }
+    });
   }
 
   if (window.innerWidth > 1024) {
