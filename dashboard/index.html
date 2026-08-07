@@ -343,15 +343,30 @@ function go(name,btn){
   if(name==='homepage') loadHP();
 }
 
-/* ── Photo preview ── */
+/* ── Photo preview & Compress ── */
 function prevPhoto(inp,pid){
   if(!inp.files||!inp.files[0])return;
   var sec=inp.id.replace('in-','').replace('-photo','');
   var r=new FileReader();
   r.onload=function(e){
-    photos[sec]=e.target.result;
-    var p=document.getElementById(pid);
-    p.style.display='block'; p.querySelector('img').src=e.target.result;
+    var img = new Image();
+    img.onload = function() {
+      var canvas = document.createElement('canvas');
+      var MAX = 800;
+      var w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round((h *= MAX / w)); w = MAX; }
+        else { w = Math.round((w *= MAX / h)); h = MAX; }
+      }
+      canvas.width = w; canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      var compressed = canvas.toDataURL('image/jpeg', 0.7);
+      photos[sec] = compressed;
+      var p = document.getElementById(pid);
+      p.style.display = 'block'; p.querySelector('img').src = compressed;
+    };
+    img.src = e.target.result;
   };
   r.readAsDataURL(inp.files[0]);
 }
