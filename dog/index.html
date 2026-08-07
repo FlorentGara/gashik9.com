@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dog Details - Gashi-k9</title>
+  <link rel="stylesheet" href="../assets/restored-theme.css">
+  <script src="../assets/gashi-cms.js"></script>
+  <script src="../assets/gashi-firebase.js"></script>
+  <style>
+    .dog-detail { max-width: 900px; margin: 60px auto; padding: 20px; }
+    .dog-detail-card { background: #fff; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; }
+    .dog-detail-img { width: 100%; height: 100%; object-fit: contain; background: #f9f9f9; min-height: 400px; }
+    .dog-detail-info { padding: 40px; }
+    .dog-detail-info h1 { font-family: 'Oswald', sans-serif; font-size: 42px; margin: 15px 0 20px; color: var(--ink); line-height: 1.1; }
+    .dog-detail-info p { color: var(--muted); margin: 0 0 20px; font-size: 16px; line-height: 1.8; white-space: pre-wrap; }
+    .dog-detail-cat { display: inline-flex; background: var(--soft); border: 1px solid var(--line); border-radius: 999px; color: #c84f10; font-size: 12px; font-weight: 700; text-transform: uppercase; padding: 6px 12px; }
+    
+    @media(max-width: 768px) {
+      .dog-detail-card { grid-template-columns: 1fr; }
+      .dog-detail-img { height: 350px; min-height: auto; }
+      .dog-detail-info { padding: 25px; }
+      .dog-detail-info h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body data-page="dog-detail">
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="../index.html"><img src="../wp-content/uploads/2025/05/cropped-480729611_122094648044791964_1407327986904884677_n.jpg" alt="Gashi-k9"><span><b>Gashi-k9</b><small>Home</small></span></a>
+      <nav class="menu">
+        <a href="../index.html">Home</a>
+        <a href="../who-we-are/index.html">Who We Are</a>
+        <a href="../services/index.html">Our Dogs</a>
+        <a href="../dogs-for-sale/index.html">Dogs For Sale</a>
+        <a href="../expecting-dogs/index.html">Expecting Litters</a>
+        <a href="../puppies/index.html">Puppies</a>
+        <a href="../our-clients/index.html">Our Clients</a>
+        <a href="../get-in-touch/index.html">Get In Touch</a>
+      </nav>
+      <button class="menu-button" aria-label="Open menu">Menu</button>
+    </div>
+  </header>
+  
+  <main>
+    <section class="section">
+      <div class="shell dog-detail">
+        <div id="dog-content">
+          <p style="text-align: center; color: #888;">Duke ngarkuar...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <script src="../assets/restored-site.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var col = urlParams.get('col');
+      var id = urlParams.get('id');
+      var container = document.getElementById('dog-content');
+      
+      if (!col || !id) {
+        container.innerHTML = '<h3>Gabim: Artikulli nuk u gjet.</h3><a href="../index.html" class="btn">Kthehu mbrapa</a>';
+        return;
+      }
+      
+      GashiDB.getOne(col, id).then(function(d) {
+        if (!d) {
+          container.innerHTML = '<h3>Gabim: Ky qen nuk ekziston më.</h3>';
+          return;
+        }
+        
+        var imgUrl = d.image || '../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg';
+        var name = d.name || d.dam || 'Dog';
+        var label = d.category || d.breed || (d.dam ? 'Litter' : 'Our dog');
+        if (d.price) label += ' • ' + d.price;
+        var desc = d.description || 'Ska përshkrim për këtë qen.';
+        
+        var statusBadge = '';
+        if (d.status) {
+          var sbc = d.status==='sold'?'#f8d7da':d.status==='reserved'?'#fff3cd':'#d4edda';
+          var sbc_text = d.status==='sold'?'#721c24':d.status==='reserved'?'#856404':'#155724';
+          var sbl = d.status==='sold'?'🔴 Sold':d.status==='reserved'?'🟡 Reserved':'✅ Available';
+          statusBadge = '<div style="margin-top: 15px; display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; background: '+sbc+'; color: '+sbc_text+';">' + sbl + '</div>';
+        }
+
+        var html = '<div class="dog-detail-card">' +
+          '<img src="'+imgUrl+'" class="dog-detail-img" alt="'+name+'">' +
+          '<div class="dog-detail-info">' +
+            '<span class="dog-detail-cat">'+label+'</span>' +
+            '<h1>'+name+'</h1>' +
+            '<p>'+desc+'</p>' +
+            statusBadge +
+            '<div style="margin-top: 30px;"><a href="javascript:history.back()" style="color: var(--orange); font-weight: 700;">&larr; Kthehu prapa</a></div>' +
+          '</div>' +
+        '</div>';
+        
+        container.innerHTML = html;
+        document.title = name + " - Gashi-k9";
+      }).catch(function() {
+        container.innerHTML = '<h3>Gabim gjatë ngarkimit.</h3>';
+      });
+    });
+  </script>
+</body>
+</html>

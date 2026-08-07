@@ -53,9 +53,9 @@
     function renderDogs(dogs) {
       if (!dogs || !dogs.length) { grid.innerHTML='<div style="text-align:center;padding:60px;color:#aaa;grid-column:1/-1;">Nuk ka qenë aktualisht.</div>'; return; }
       dogs.sort(function(a,b){ return (a.sortOrder||999)-(b.sortOrder||999); });
-      grid.innerHTML = dogs.map(function(d) {
-        return '<article class="profile-card"><img src="'+(d.image||'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg')+'" alt="'+d.name+'" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'"><div><span>'+(d.category||'Our dog')+'</span><h2>'+d.name+'</h2><p>'+d.description+'</p></div></article>';
-      }).join('');
+        grid.innerHTML = dogs.map(function(d) {
+          return '<article class="profile-card"><img src="'+(d.image||'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg')+'" alt="'+d.name+'" onerror="this.src=\'../wp-content/uploads/2025/05/IMG_9574-1024x659.jpeg\'"><div><span>'+(d.category||'Our dog')+'</span><h2>'+d.name+'</h2><p class="truncate-text">'+d.description+'</p><a href="../dog/index.html?col=dogs&id='+d._key+'" class="read-more-btn">Read More</a></div></article>';
+        }).join('');
     }
     function renderDogsStatic(dogs) {
       grid.innerHTML = dogs.map(function(d) {

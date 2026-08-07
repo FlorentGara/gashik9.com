@@ -63,7 +63,8 @@
             '<div class="sale-name">'+d.name+'</div>' +
             (d.breed?'<div class="sale-breed">'+d.breed+'</div>':'') +
             (d.price?'<div class="sale-price">'+d.price+'</div>':'') +
-            (d.description?'<div class="sale-desc">'+d.description+'</div>':'') +
+            (d.description?'<div class="sale-desc truncate-text" style="margin-top:10px;">'+d.description+'</div>':'') +
+            '<a href="../dog/index.html?col=dogs_for_sale&id='+d._key+'" class="read-more-btn">Read More</a>' +
             '</div></div>';
         }).join('');
       }).catch(function(){ grid.innerHTML='<div class="empty-state"><h3>Gabim gjatë ngarkimit.</h3></div>'; });

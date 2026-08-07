@@ -62,7 +62,8 @@
             '<div class="pup-name">'+d.name+'</div>' +
             (d.age?'<div class="pup-meta">Age: '+d.age+'</div>':'') +
             (d.price?'<div class="pup-price">'+d.price+'</div>':'') +
-            (d.description?'<div class="pup-desc">'+d.description+'</div>':'') +
+            (d.description?'<div class="pup-desc truncate-text" style="margin-top:10px;">'+d.description+'</div>':'') +
+            '<a href="../dog/index.html?col=puppies&id='+d._key+'" class="read-more-btn">Read More</a>' +
             '</div></div>';
         }).join('');
       }).catch(function(){ grid.innerHTML='<div class="empty-state"><p>Gabim gjatë ngarkimit.</p></div>'; });

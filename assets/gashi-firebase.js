@@ -17,6 +17,15 @@ window.GashiDB = {
         }).sort(function(a,b){ return (b.addedAt||'').localeCompare(a.addedAt||''); });
       });
   },
+  // Get single item
+  getOne: function(collection, key) {
+    return fetch(GASHI_DB + '/' + collection + '/' + key + '.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data) return null;
+        return Object.assign({}, data, { _key: key });
+      });
+  },
   // Add item to collection
   add: function(collection, data) {
     data.addedAt = new Date().toISOString();
