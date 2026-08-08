@@ -10,7 +10,7 @@
     ['brand', 'Brand'],
     ['home', 'Home'],
     ['about', 'Who We Are'],
-    ['dogs', 'Our Dogs'],
+    ['dogs', 'Available Adults'],
     ['sale', 'Dogs For Sale'],
     ['litters', 'Expecting Litters'],
     ['puppies', 'Puppies'],

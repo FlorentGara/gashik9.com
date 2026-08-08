@@ -94,7 +94,7 @@
           <p class="eyebrow">${$(content.brand.location)}</p>
           <h1>${$(h.headline).replace('Gashi-k9', '<span class="accent">Gashi-k9</span>')}</h1>
           <p class="lead">${$(h.intro)}</p>
-          <p><a class="pill" href="${route('services/index.html')}">Meet Our Dogs</a></p>
+          <p><a class="pill" href="${route('services/index.html')}">Meet Available Adults</a></p>
         </div>
         <div class="hero-media"><span class="ring"></span><img class="hero-img" src="${asset(h.image)}" alt="Gashi-k9 working dog"></div>
       </div>
