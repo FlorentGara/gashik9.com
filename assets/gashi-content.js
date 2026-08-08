@@ -12,8 +12,8 @@ window.GASHI_DEFAULT_CONTENT = {
   nav: [
     ['Home', 'index.html'],
     ['Who We Are', 'who-we-are/index.html'],
-    ['Available Adults', 'services/index.html'],
-    ['Dogs For Sale', 'dogs-for-sale/index.html'],
+    ['Our Dogs', 'services/index.html'],
+    ['Available Adults', 'dogs-for-sale/index.html'],
     ['Expecting Litters', 'expecting-dogs/index.html'],
     ['Puppies', 'puppies/index.html'],
     ['Our Clients', 'our-clients/index.html'],
@@ -57,7 +57,7 @@ window.GASHI_DEFAULT_CONTENT = {
     points: ['Balanced temperament before everything', 'Strong working lines and honest evaluation', 'Raised around people, routine, and structure', 'Matched carefully with the right home']
   },
   dogs: {
-    title: 'Available Adults',
+    title: 'Our Dogs',
     subtitle: 'The core of the kennel.',
     intro: 'Meet the dogs behind our program. The dashboard can add, remove, reorder, and edit every card.',
     items: [
@@ -68,7 +68,7 @@ window.GASHI_DEFAULT_CONTENT = {
     ]
   },
   sale: {
-    title: 'Dogs For Sale',
+    title: 'Available Adults',
     subtitle: 'Available dogs and recent placements.',
     intro: 'Use this page for currently available dogs, reserved dogs, or sold dogs.',
     items: [
